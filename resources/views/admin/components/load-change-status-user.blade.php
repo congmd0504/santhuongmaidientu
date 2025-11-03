@@ -1,0 +1,1 @@
+<a  class="btn btn-sm {{$data->status==2?'btn-success': ($data->status==1 ? 'btn-warning' : 'btn-danger') }} {{$data->status==1?' lb-status-user':''}}" data-value="{{$data->status}}" data-type="{{$type?$type:''}}"  style="width:80px;">{{$data->status==2?'Đã KYC':($data->status == 1? 'Đang đợi KYC' : 'Chưa gửi KYC')}}</a>

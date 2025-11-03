@@ -1,0 +1,116 @@
+.lb-wrap-content-main {
+    /* width */
+     ::-webkit-scrollbar {
+        width: 2px;
+    }
+    /* Track */
+     ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    /* Handle */
+     ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    /* Handle on hover */
+     ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+    .lb_sidebar {
+        background-color: #000;
+        color: #fff;
+        width: 250px;
+        padding: 15px;
+        height: 100vh;
+        overflow-y: auto;
+        position: sticky;
+        left: 0;
+        top: 0;
+        .lb_admin {
+            margin-bottom: 20px;
+            .lb_icon {
+                img {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
+            .lb_username {
+                font-size: 20px;
+            }
+        }
+        .lb-list-sidebar {
+            list-style: none;
+            padding-left: 0;
+            a {
+                color: inherit;
+            }
+            i {
+                width: 30px;
+                text-align: center;
+                font-size: 70%;
+                margin-left: 10px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                line-height: inherit;
+            }
+            &>a {
+                font-size: 16px;
+            }
+            li {
+                line-height: 30px;
+                position: relative;
+            }
+            .lb-sidebar-item {
+                .lb-sidebar-sub {
+                    display: none;
+                    list-style: none;
+                    padding-left: 0;
+                    li {
+                        a {
+                            font-size: 15px;
+                        }
+                        .lb-sidebar-sub-child {
+                            display: none;
+                            li {
+                                a {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .lb-content-main {
+        width: calc(100% - 250px);
+        .lb-header {
+            padding: 20px;
+            background: #f2f2f2;
+            .lb-nav-main {
+                display: flex;
+                .lb-menu {
+                    .lb-icon-menu {
+                        img {
+                            width: 40px;
+                            height: auto;
+                        }
+                    }
+                }
+                .lb-list-navbar {
+                    display: flex;
+                    list-style: none;
+                    li {
+                        a {
+                            display: inline-block;
+                            padding: 5px 20px;
+                        }
+                    }
+                }
+                .lb-search {}
+            }
+        }
+        .lb-content {
+            padding-left: 20px;
+            margin-top: 20px;
+        }
+    }
+}
