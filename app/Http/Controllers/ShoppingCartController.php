@@ -195,13 +195,8 @@ class ShoppingCartController extends Controller
             $totalPriceCart += $totalPriceCarts['totalPriceOneItem'];
         }
         $totalPrice = $totalPriceCart;
-//        dump($totalPrice, $sumPointCurrent * config("point.typePoint.pointReward"));
+        //dump($totalPrice, $sumPointCurrent * config("point.typePoint.pointReward"));
         //$totalPrice = $totalPrice + ($totalPointAccessUse * config("point.typePoint.pointReward"));
-
-
-
-
-
 
         return view('frontend.pages.cart', [
             'data' => $data,
@@ -224,18 +219,41 @@ class ShoppingCartController extends Controller
     }
 
     public function add($id)
-    {
-        $this->cart = new CartHelper();
-        $user = auth()->guard('web')->user();
-        $product = $this->product->find($id);
-
-        $this->cart->add($product, $user);
-        //  dd($this->cart->cartItems);
+{
+    $this->cart = new CartHelper();
+    $user = auth()->guard('web')->user();
+    $product = $this->product->find($id);
+    // Kiểm tra sản phẩm có tồn tại
+    if (!$product) {
         return response()->json([
-            'code' => 200,
-            'messange' => 'success'
-        ], 200);
+            'code' => 404,
+            'message' => 'Sản phẩm không tồn tại.'
+        ], 404);
     }
+
+    if ($product->sp_khoi_nghiep == 1) {
+        if (!$user) {
+            return response()->json([
+                'code' => 401,
+                'message' => 'Vui lòng đăng nhập để mua sản phẩm Khởi nghiệp.'
+            ], 401);
+        }
+        if (!$user->checkUserKhoiNghiep()) {
+            return response()->json([
+                'code' => 400,
+                'message' => 'Bạn chưa là tài khoản Khởi nghiệp.'
+            ], 400);
+        }
+    }
+
+    $this->cart->add($product, $user);
+
+    return response()->json([
+        'code' => 200,
+        'message' => 'success'
+    ], 200);
+}
+
     public function buy($id)
     {
         $this->cart = new CartHelper();
@@ -861,7 +879,6 @@ class ShoppingCartController extends Controller
 
     public function applyCodeSale(Request $request)
     {
-
         $code = $request->code;
         $user = auth()->guard('web')->user();
         $sumPointCurrent = $this->point->sumPointMuaHangCurrent($user->id);

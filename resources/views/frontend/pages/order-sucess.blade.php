@@ -106,7 +106,7 @@
                                                 <li><span>Giao đến </span> {{ $data->address_detail }}, {{ optional($data->commune)->name }}, {{ optional($data->district)->name }}, {{ optional($data->city)->name }} (nhân viên sẽ gọi xác nhận trước khi giao).</li>
                                                 <li class="total-price"><span>Tổng tiền </span> {{ number_format($data->total) }} {{ $unit }}</li>
                                                 <li class="total-price"><span>Chi trả bằng tiền mặt</span> {{ number_format($data->money) }} {{ $unit }}</li>
-                                                <li class="total-price"><span>Chi trả bằng BB </span> {{ number_format($data->point) }} {{ $pointUnit }}</li>
+                                                <li class="total-price"><span>Chi trả bằng KTG </span> {{ number_format($data->point) }} {{ $pointUnit }}</li>
                                                 <li class="total-price"><span>Chi trả Ví VNĐ </span> {{ number_format($data->vi_vnd) }} {{ $unit }}</li>
                                                 <li class="total-price"><span>Sử dụng giảm giá </span> {{ number_format($data->money_code_sale) }}</li>
                                             </ul>

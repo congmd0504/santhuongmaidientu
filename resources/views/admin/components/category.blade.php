@@ -15,7 +15,6 @@
                     </div>
                     <div class="col-sm-2 pt-2 pb-2 slug text-center">
                         Thứ tự
-
                     </div>
                     <div class="col-sm-3 pt-2 pb-2 parent text-center">
                         Trạng thái

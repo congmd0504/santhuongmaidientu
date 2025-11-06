@@ -160,7 +160,7 @@ input::placeholder{
                                                   <strong>Tổng giá trị đơn hàng:</strong>  {{ number_format($transaction->total) }} đ
                                                 </li>
                                                 <li>
-                                                    <strong>Trả bằng Ví BB:</strong>   {{ number_format($transaction->point)}} BB
+                                                    <strong>Trả bằng Ví KTG:</strong>   {{ number_format($transaction->point)}} KTG
                                                 </li>
                                                  <li>
                                                      <strong>Trả bằng Ví VNĐ:</strong>   {{ number_format($transaction->vi_vnd)}} đ

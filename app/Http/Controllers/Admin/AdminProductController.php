@@ -217,6 +217,34 @@ class AdminProductController extends Controller
             ], 500);
         }
     }
+    public function loadKhoiNghiep($id)
+    {
+        $product   =  $this->product->find($id);
+        $khoiNghiep = $product->sp_khoi_nghiep;
+
+        if ($khoiNghiep) {
+            $khoiNghiepUpdate = 0;
+        } else {
+            $khoiNghiepUpdate = 1;
+        }
+        $updateResult =  $product->update([
+            'sp_khoi_nghiep' => $khoiNghiepUpdate,
+        ]);
+
+        $product   =  $this->product->find($id);
+        if ($updateResult) {
+            return response()->json([
+                "code" => 200,
+                "html" => view('admin.components.load-change-khoi-nghiep', ['data' => $product,'type'=>'sản phẩm'])->render(),
+                "message" => "success"
+            ], 200);
+        } else {
+            return response()->json([
+                "code" => 500,
+                "message" => "fail"
+            ], 500);
+        }
+    }
 
     public function create(Request $request = null)
     {
@@ -241,6 +269,8 @@ class AdminProductController extends Controller
                 "order" => $request->input('order') ?? null,
                 "phantramdiem" => $request->input('phantramdiem') ?? 0,
                 "hot" => $request->input('hot') ?? 0,
+                "sp_khoi_nghiep" => $request->input('sp_khoi_nghiep') ?? 0,
+                "sp_tieu_dung" => $request->input('sp_tieu_dung') ?? 0,
 				"gio_vang" => $request->input('gio_vang') ?? 0,
                 "het_hang" => $request->input('het_hang') ?? 0,
                 // "pay"=>$request->input('pay'),
@@ -325,6 +355,8 @@ class AdminProductController extends Controller
                 "order" => $request->input('order') ?? null,
                 "phantramdiem" => $request->input('phantramdiem') ?? 0,
                 "hot" => $request->input('hot') ?? 0,
+                "sp_khoi_nghiep" => $request->input('sp_khoi_nghiep') ?? 0,
+                "sp_tieu_dung" => $request->input('sp_tieu_dung') ?? 0,
 				"gio_vang" => $request->input('gio_vang') ?? 0,
                 "het_hang" => $request->input('het_hang') ?? 0,
                 // "pay"=>$request->input('pay'),

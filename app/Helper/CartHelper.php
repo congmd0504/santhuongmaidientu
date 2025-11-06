@@ -121,7 +121,13 @@ class CartHelper
                 $isProductTinhDiem = false;
                 if ($this->cartItems) {
                     foreach ($this->cartItems as $cartItem) {
-                        if ($cartItem['id'] == $itemMa->product_id) {
+                        if(!isset($itemMa->product_id)){
+                                if ($cartItem['is_tinh_diem'] == 1) {
+                                    $isProductTinhDiem = true;
+                                }
+                                $isProduct = true;
+                                $count = $cartItem['quantity'];
+                        }elseif($cartItem['id'] == $itemMa->product_id) {
                             if ($cartItem['is_tinh_diem'] == 1) {
                                 $isProductTinhDiem = true;
                             }
@@ -130,10 +136,7 @@ class CartHelper
                         }
                     }
                 }
-
-                // dd($itemMa, $isProduct , $count);
                 if ($isProduct || (!$itemMa->product_id && count($this->cartItems) > 0)) {
-
                     $this->cartSale = [
                         'product_id' => $itemMa->product_id,
                         'codeSale' => $code,
@@ -377,7 +380,6 @@ class CartHelper
                 $tP = $tP > 0 ? $tP : 0;
 //            }
         }
-
         $tP = $tP / getConfigBB();
         return $tP;
     }

@@ -10,6 +10,7 @@ use App\Models\Point;
 class User extends Authenticatable
 {
     use Notifiable;
+    const KHOI_NGHIEP = 2;
     // status [1=>'khởi tạo chưa điền hoàn thiện thông tin',2=>'đã điền hoàn thiện thông tin']
 
     /**
@@ -23,7 +24,7 @@ class User extends Authenticatable
         'address', 'hktt', 'cmt', 'stk', 'ctk', 'bank_id', 'bank_branch', 'sex',
         'status', 'avatar_path', 'code', 'admin_id','created_at',
         'total_money', 'total_money_group', 'level', 'total_money_current', 'is_first_buy',
-        'parent_all_key', 'cmt_matduoi_path', 'cmt_mattren_path', 'thuong_cap'
+        'parent_all_key', 'cmt_matduoi_path', 'cmt_mattren_path', 'thuong_cap','gift'
     ];
 
     /**
@@ -390,4 +391,10 @@ class User extends Authenticatable
         dd($parent_id2);
         return $parent_id2;
     }
+
+   public function checkUserKhoiNghiep()
+    {
+        return $this->level == self::KHOI_NGHIEP;
+    }
+
 }

@@ -12,6 +12,7 @@ use App\Models\Admin;
 use App\Traits\DeleteRecordTrait;
 use PDF;
 use App\Traits\PointTrait;
+use App\Traits\WalletTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\Point;
@@ -19,7 +20,7 @@ use App\Models\Setting;
 class AdminTransactionController extends Controller
 {
     //
-    use DeleteRecordTrait, PointTrait;
+    use DeleteRecordTrait, PointTrait,WalletTrait;
     private  $transaction;
     private $unit;
     private $listStatus;
@@ -254,20 +255,20 @@ class AdminTransactionController extends Controller
     }
 
 	  public function editStatus($id)
-    {
-        $transaction=$this->transaction->find($id);
-        if(!$transaction){
-            abort(404);
-        }
+        {
+            $transaction=$this->transaction->find($id);
+            if(!$transaction){
+                abort(404);
+            }
 
-        return response()->json([
-            'code' => 200,
-            'html' => view('admin.components.loadStatusTransaction', [
-                'data'=>$transaction
-            ])->render(),
-            'messange' => 'success'
-        ], 200);
-    }
+            return response()->json([
+                'code' => 200,
+                'html' => view('admin.components.loadStatusTransaction', [
+                    'data'=>$transaction
+                ])->render(),
+                'messange' => 'success'
+            ], 200);
+        }
     public function updateStatus($id,Request $request){
         try {
             DB::beginTransaction();
@@ -281,68 +282,82 @@ class AdminTransactionController extends Controller
                 $orderId = Order::where('transaction_id', $transaction->id)->first();
                 $product = Product::find($orderId->product_id);
                 if ($user) {
-                
                     //Xây dựng luồng sản phẩm không tích lũy
-                    if($product->khong_tich_luy_ds){
-                        $phanTramThuongC1 = Setting::find(127)->value;
-                        $parentC1 = $user->parent;
-                        if ($parentC1) {
-                            if($parentC1->level >= 2){
-                                $parentC1->points()->createMany([
-                                    [
-                                        'type' => config("point.typePoint")[21]['type'],
-                                        'point' => $transaction->total * $phanTramThuongC1 / 100,
-                                        'active' => 1,
-                                        'userorigin_id' => $user->id,
-                                        'point_id' => null,
-                                        'phantram' => null,
-                                    ]
-                                ]);
-                            }
+                    // if($product->khong_tich_luy_ds){
+                    //     $phanTramThuongC1 = Setting::find(127)->value;
+                    //     $parentC1 = $user->parent;
+                    //     if ($parentC1) {
+                    //         if($parentC1->level >= 2){
+                    //             $parentC1->points()->createMany([
+                    //                 [
+                    //                     'type' => config("point.typePoint")[21]['type'],
+                    //                     'point' => $transaction->total * $phanTramThuongC1 / 100,
+                    //                     'active' => 1,
+                    //                     'userorigin_id' => $user->id,
+                    //                     'point_id' => null,
+                    //                     'phantram' => null,
+                    //                 ]
+                    //             ]);
+                    //         }
 
-                            $parentC2 = $parentC1->parent;
-                            $phanTramThuongC2 = Setting::find(128)->value;
-                            if ($parentC2) {
-                                if($parentC2->level >= 3){
-                                    $parentC2->points()->createMany([
-                                        [
-                                            'type' => config("point.typePoint")[21]['type'],
-                                            'point' => $transaction->total * $phanTramThuongC2 / 100,
-                                            'active' => 1,
-                                            'userorigin_id' => $user->id,
-                                            'point_id' => null,
-                                            'phantram' => null,
-                                        ]
-                                    ]);
-                                }
+                    //         $parentC2 = $parentC1->parent;
+                    //         $phanTramThuongC2 = Setting::find(128)->value;
+                    //         if ($parentC2) {
+                    //             if($parentC2->level >= 3){
+                    //                 $parentC2->points()->createMany([
+                    //                     [
+                    //                         'type' => config("point.typePoint")[21]['type'],
+                    //                         'point' => $transaction->total * $phanTramThuongC2 / 100,
+                    //                         'active' => 1,
+                    //                         'userorigin_id' => $user->id,
+                    //                         'point_id' => null,
+                    //                         'phantram' => null,
+                    //                     ]
+                    //                 ]);
+                    //             }
 
-                                $parentC3 = $parentC2->parent;
-                                $phanTramThuongC3 = Setting::find(129)->value;
-                                if ($parentC3) {
-                                    if($parentC3->level >= 4){
-                                        $parentC3->points()->createMany([
-                                            [
-                                                'type' => config("point.typePoint")[21]['type'],
-                                                'point' => $transaction->total * $phanTramThuongC3 / 100,
-                                                'active' => 1,
-                                                'userorigin_id' => $user->id,
-                                                'point_id' => null,
-                                                'phantram' => null,
-                                            ]
-                                        ]);
-                                    }
-                                }
-                            }
-                        }
+                    //             $parentC3 = $parentC2->parent;
+                    //             $phanTramThuongC3 = Setting::find(129)->value;
+                    //             if ($parentC3) {
+                    //                 if($parentC3->level >= 4){
+                    //                     $parentC3->points()->createMany([
+                    //                         [
+                    //                             'type' => config("point.typePoint")[21]['type'],
+                    //                             'point' => $transaction->total * $phanTramThuongC3 / 100,
+                    //                             'active' => 1,
+                    //                             'userorigin_id' => $user->id,
+                    //                             'point_id' => null,
+                    //                             'phantram' => null,
+                    //                         ]
+                    //                     ]);
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
 
-                    }
+                    // }
 
                     //Nếu mà sản phẩm được tính điểm thì mới cộng doanh số
-                    if($product->is_tinh_diem == 1){
+                   if ($product->is_tinh_diem == 1) {
                         $totalMoney = $transaction->vi_vnd + $transaction->money;
-                        //$totalMoney = $transaction->total;
-                        $this->addPointWhenMuaHang($user, $totalMoney);
+                        // $this->addPointWhenMuaHang($user, $totalMoney);
+                        $this->addBonusBB($user, $product);
                     }
+                     if ($product->sp_khoi_nghiep == 1) {
+                        $this->addWalletDeposit($user, $product);
+                    }
+                    if ($user->gift > 0) {
+                        $user->points()->create([
+                            'type' => config("point.typePoint")[29]['type'],
+                            'point' => getConfigGift() * getConfigBB(),
+                            'active' => 1,
+                            'userorigin_id' => $user->id,
+                        ]);
+                        $user->update([
+                            'gift' => $user->gift - 1,
+                        ]);
+                    }
+
                 }
             }
 
@@ -412,6 +427,7 @@ class AdminTransactionController extends Controller
                 'messange' => 'success'
             ], 200);
         } catch (\Exception $exception) {
+            dd($exception);
             //throw $th;
             DB::rollBack();
             Log::error('message' . $exception->getMessage() . 'line :' . $exception->getLine());

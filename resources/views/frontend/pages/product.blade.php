@@ -82,9 +82,9 @@
                                                                         {{ 'Sale ' . $product->sale . '%' }}
                                                                     @endif
                                                                 </span>
-                                                                @if ($product->phantramdiem > 0)
+                                                                @if ($product->phantramdiem > 0 && $product->is_tinh_diem == 1)
                                                                 <span class="sale-acstion2">
-                                                                    - {{ intval($product->phantramdiem) }}%(BB)
+                                                                    {{ intval($product->phantramdiem) }}%(KTG)
                                                                 </span>
                                                                     @endif
                                                             @endif

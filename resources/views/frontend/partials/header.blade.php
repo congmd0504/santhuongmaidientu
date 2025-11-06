@@ -332,18 +332,18 @@
             <div class="menu menu-desktop">
                 <div class="box-menu-despkop">
                     <div class="fix-footer-box">
-                        <a href="https://santhuongmaidientu.online" class="d-block ta-center">
+                        <a href="/" class="d-block ta-center">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 640 512">
                                 <path d="M208 320h384c8.8 0 16-7.2 16-16V48c0-8.8-7.2-16-16-16H448v128l-48-32-48 32V32H208c-8.8 0-16 7.2-16 16v256c0 8.8 7.2 16 16 16zm416 64H128V16c0-8.8-7.2-16-16-16H16C7.2 0 0 7.2 0 16v32c0 8.8 7.2 16 16 16h48v368c0 8.8 7.2 16 16 16h82.9c-1.8 5-2.9 10.4-2.9 16 0 26.5 21.5 48 48 48s48-21.5 48-48c0-5.6-1.2-11-2.9-16H451c-1.8 5-2.9 10.4-2.9 16 0 26.5 21.5 48 48 48s48-21.5 48-48c0-5.6-1.2-11-2.9-16H624c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16z"></path>
                             </svg>
-                            <span class="d-block">
+                        <span class="d-block">
                                 KHO HÀNG
                             </span>
                         </a>
                     </div>
-
+                    @if(isset($header['nang_cap']))
                     <div class="fix-footer-box">
-                        <a href="https://santhuongmaidientu.online/product/category-product/102-nang-cap-tai-khoan" class="d-block ta-center">
+                        <a href="{{ makeLink('category_products', $header['nang_cap']->id, $header['nang_cap']->slug) }}" class="d-block ta-center">
                             <svg width="30px" height="30px" viewBox="0 0 1024 1024" fill="#000000" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -358,9 +358,10 @@
                             </span>
                         </a>
                     </div>
+                    @endif
 
                     <div class="fix-footer-box">
-                        <a href="https://santhuongmaidientu.online/contact" class="d-block ta-center">
+                        <a href="{{ route('contact.index') }}" class="d-block ta-center">
                             <svg fill="#000000" width="30px" height="30px" viewBox="0 0 64 64" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#000000" stroke-width="1.472">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

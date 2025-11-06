@@ -1,8 +1,8 @@
 <?php
 return [
-    'listTypePointMH'=> [1, 2, 3, 4, 5, 6, 9, 10, 12, 15, 16, 17, 18, 19, 20, 26], //Ví BB
+    'listTypePointMH'=> [1, 2, 3, 4, 5, 6, 9, 10, 12, 15, 16, 17, 18, 19, 20, 26,27,29], //Ví KTG
     'listTypePointRut'=> [4, 5, 6, 7, 8, 11, 13],
-    'listTypePointDiemThuong'=> [4, 5, 6, 7, 8, 11, 13, 14, 21, 22, 23, 24, 25], //Nạp tiền, rút tiền và đổi sang bb sẽ cộng trừ vào ví này
+    'listTypePointDiemThuong'=> [4, 5, 6, 7, 8, 11, 13, 14, 21, 22, 23, 24, 25,28,30], //Nạp tiền, rút tiền và đổi sang KTG sẽ cộng trừ vào ví này
     'tonghoahongnhanduoc' => [4, 5, 6, 11, 13, 14, 21],
     'listTypePointDiemDaRut'=> [7, 8, 11],
 
@@ -12,7 +12,6 @@ return [
 
     'listTypePointDiemMuaHangTichLuy' => [24, 25], //Tính tiền ví vnđ khi mua sản phẩm tích lũy
 
-
     'typePoint' => [
         // start
         1 => [
@@ -21,11 +20,11 @@ return [
         ],
         2 => [
             'type' => 2,
-            'name' => 'BB thưởng KYC',
+            'name' => 'KTG thưởng KYC',
         ],
         3 => [
             'type' => 3,
-            'name' => 'BB thưởng khi nạp',
+            'name' => 'KTG thưởng khi nạp',
         ],
         4 => [
             'type' => 4,
@@ -49,19 +48,19 @@ return [
         ],
         9 =>  [
             'type' => 9,
-            'name' => 'BB Đã sử dụng để mua hàng',
+            'name' => 'KTG Đã sử dụng để mua hàng',
         ],
         10 =>  [
             'type' => 10,
-            'name' => 'BB được đổi từ điểm',
+            'name' => 'KTG được đổi từ điểm',
         ],
         11 =>  [
             'type' => 11,
-            'name' => 'Điểm đã đổi sang BB',
+            'name' => 'Điểm đã đổi sang KTG',
         ],
         12 =>  [
             'type' => 12,
-            'name' => 'BB được nhận từ admin',
+            'name' => 'KTG được nhận từ admin',
         ],
         13 =>  [
             'type' => 13,
@@ -73,34 +72,32 @@ return [
         ],
         15 =>  [
             'type' => 15,
-            'name' => 'Trừ BB user',
+            'name' => 'Trừ KTG user',
         ],
         16 =>  [
             'type' => 16,
-            'name' => 'Cộng BB user',
+            'name' => 'Cộng KTG user',
         ],
         17 =>  [
             'type' => 17,
-            'name' => 'Thưởng BB tái tiêu dùng',
+            'name' => 'Thưởng KTG tái tiêu dùng',
         ],
         18 =>  [
             'type' => 18,
-            'name' => 'Thưởng BB doanh số nhóm tháng',
+            'name' => 'Thưởng KTG doanh số nhóm tháng',
         ],
         19 =>  [
             'type' => 19,
-            'name' => 'Thưởng BB doanh số nhóm năm',
+            'name' => 'Thưởng KTG doanh số nhóm năm',
         ],
         20 =>  [
             'type' => 20,
-            'name' => 'Thưởng BB level',
+            'name' => 'Thưởng KTG level',
         ],
-
         21 =>  [
             'type' => 21,
             'name' => 'Thưởng từ cấp dưới của sản phẩm không tích lũy',
         ],
-
         22 =>  [
             'type' => 22,
             'name' => 'Trừ điểm khi mua sản phẩm không tích lũy',
@@ -119,10 +116,28 @@ return [
         ],
         26 =>  [
             'type' => 26,
-            'name' => 'Hoàn lại BB mua sản phẩm không thành công',
+            'name' => 'Hoàn lại KTG mua sản phẩm không thành công',
         ],
+        27 =>  [
+            'type' => 27,
+            'name' => 'Thưởng KTG khi con mua sản phẩm',
+        ],
+        28 =>  [
+            'type' => 28,
+            'name' => 'Giải ngân ví đặt cọc hàng tháng',
+        ],
+        29 =>  [
+            'type' => 29,
+            'name' => 'Tặng thêm ở gói khởi nghiệp',
+        ],
+        30 =>  [
+            'type' => 30,
+            'name' => 'Mua gói khởi nghiệp',
+        ],
+
+
         'defaultPoint' => 100,
-        'pointReward' => 1000, //1BB = 1000
+        'pointReward' => 1000, //1KTG = 1000
         'minMoney' => 10000, // số tiền tối thiểu trong tài khoản
         'minMoneyRut' => 200000, // số tiền tối thiểu rút
 
@@ -215,7 +230,6 @@ return [
         1 => [
             'type' => 1,
             'name' => 'Đang chờ xử lý',
-
         ],
         2 => [
             'type' => 2,
@@ -230,7 +244,6 @@ return [
         1 => [
             'type' => 1,
             'name' => 'Nhập kho',
-
         ],
         2 => [
             'type' => 2,
@@ -242,12 +255,12 @@ return [
         ],
     ],
     'level' => [
-        0 => "Khách hàng",
-        1 => "Cộng tác viên", // Khách hàng thân thiết
-        2 => "Đại lý", // Hạng đồng
-        3 => "Trưởng nhóm KD", // Hạng bạc
-        4 => "Trưởng phòng KD", // Hạng vàng
-        5 => "Giám đốc vùng", // Hạng kim cương
+        0 => "Khách hàng mới",
+        1 => "Người tiêu dùng thông minh", // Khách hàng thân thiết
+        2 => "Khởi nghiệp", // Hạng đồng
+        3 => "Quản lý", // Hạng bạc
+        // 4 => "Trưởng phòng KD", // Hạng vàng
+        4 => "Giám đốc vùng", // Hạng kim cương
     ],
     // thời gian mở cổng rút điểm
     'datePay' => [
@@ -257,7 +270,7 @@ return [
     // số điểm bắn mắc định
     'transferPointDefault' => 1,
     // đơn vị của điểm
-    'pointUnit' => 'BB',
+    'pointUnit' => 'KTG',
     'pointToMoney' => 1000,
     'namePointDefault' => "Phạm Văn Hưng",
 

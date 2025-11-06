@@ -13,8 +13,6 @@ Route::post('adminb2b/password/reset', 'Auth\AdminResetPasswordController@reset'
 
 
 
-
-
 Route::group(['prefix' => 'adminb2b','namespace'=>'Admin','middleware'=>'auth:admin'], function () {
     // Route::get('/', function () {
     //     return view("admin.master.main");
@@ -37,6 +35,7 @@ Route::group(['prefix' => 'adminb2b','namespace'=>'Admin','middleware'=>'auth:ad
         Route::get('/destroy/{id}', "AdminCategoryProductController@destroy")->name("admin.categoryproduct.destroy")->middleware('can:category-product-delete');
         Route::post('/export/excel/database', "AdminCategoryProductController@excelExportDatabase")->name("admin.categoryproduct.export.excel.database");
         Route::post('/import/excel/database', "AdminCategoryProductController@excelImportDatabase")->name("admin.categoryproduct.import.excel.database");
+        Route::get('/update-category-product-hot/{id}', "AdminCategoryProductController@loadHot")->name("admin.categoryproduct.load.hot")->middleware('can:category-product-edit');
     });
     Route::group(['prefix' => 'categorypost'], function () {
         Route::get('/', "AdminCategoryPostController@index")->name("admin.categorypost.index")->middleware('can:category-post-list');
@@ -65,6 +64,7 @@ Route::group(['prefix' => 'adminb2b','namespace'=>'Admin','middleware'=>'auth:ad
         Route::get('/destroy/{id}', "AdminProductController@destroy")->name("admin.product.destroy")->middleware('can:product-delete');
         Route::get('/update-active/{id}', "AdminProductController@loadActive")->name("admin.product.load.active")->middleware('can:product-edit');
         Route::get('/update-hot/{id}', "AdminProductController@loadHot")->name("admin.product.load.hot")->middleware('can:product-edit');
+        Route::get('/update-khoi-nghiep/{id}', "AdminProductController@loadKhoiNghiep")->name("admin.product.load.khoi-nghiep")->middleware('can:product-edit');
 
         Route::post('/delete-image/{id}', "AdminProductController@destroyProductImage")->name("admin.product.destroy-image")->middleware('can:product-edit');
         Route::post('/delete-avatar-path/{id}', "AdminProductController@destroyProductAvatar")->name("admin.product.delete_avatar_path")->middleware('can:product-edit');

@@ -165,16 +165,24 @@
                                          </div>
 
                                         <div class="row">
-                                            <div class="col-md-8">
+                                           <div class="col-md-8">
                                                 <div class="form-group">
-                                                    <label for="">Giá sản phẩm</label>
-                                                    <input type="text" class="form-control
-                                                @error('price') is-invalid @enderror" id="" value="{{ old('price') }}" name="price" placeholder="Nhập giá">
+                                                    <label for="">Giá sỉ</label>
+                                                    <input type="text"
+                                                        class="form-control @error('price') is-invalid @enderror"
+                                                        id="price_display"
+                                                        value="{{ old('price') }}"
+                                                        placeholder="Nhập giá hiển thị">
+
+                                                    {{-- input ẩn để gửi lên server --}}
+                                                    <input type="hidden" name="price" id="price" value="{{ old('price') }}">
                                                 </div>
+
                                                 @error('price')
-                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                    <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
+
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="">Sale(%)</label>
@@ -188,7 +196,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="">Phần trăm mua bằng điểm</label>
+                                                    <label for="">Phần trăm điểm KTG(%)</label>
                                                     <input type="number" class="form-control @error('phantramdiem')
                                                         is-invalid
                                                         @enderror" id="" value="{{ old('phantramdiem') }}" name="phantramdiem" min="0" max="100" placeholder="Nhập %">
@@ -199,65 +207,92 @@
                                             </div>
 
                                         </div>
-                                        <div class="form-group">
-                                            <div class="form-check-inline">
-                                                <label class="form-check-label">Sản phẩm giá sỉ
-                                                    <input type="checkbox" class="form-check-input @error('hot')
-                                                        is-invalid
-                                                        @enderror" value="1" name="hot" @if(old('hot')==="1" ) {{'checked'}} @endif>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        @error('hot')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-										<div class="form-group">
-                                            <div class="form-check-inline">
-                                                <label class="form-check-label">Hiện sản phẩm giờ vàng
-                                                    <input type="checkbox" class="form-check-input @error('gio_vang') is-invalid
-                                                        @enderror" value="1" name="gio_vang" @if(old('gio_vang')==="1" ) {{'checked'}} @endif>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        @error('gio_vang')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-group">
-                                            <div class="form-check-inline">
-                                                <label class="form-check-label">Hết hàng
-                                                    <input type="checkbox" class="form-check-input @error('het_hang')
-                                                        is-invalid
-                                                        @enderror" value="1" name="het_hang" @if(old('het_hang')==="1" ) {{'checked'}} @endif>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        @error('het_hang')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-group">
-                                            <div class="form-check-inline">
-                                                <label class="form-check-label">Tính điểm thưởng
-                                                    <input type="checkbox" class="form-check-input @error('is_tinh_diem')
-                                                        is-invalid
-                                                        @enderror" value="1" name="is_tinh_diem" @if(old('is_tinh_diem')==="1" ) {{'checked'}} @endif>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        @error('is_tinh_diem')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
-                                        <div class="form-group">
-                                            <div class="form-check-inline">
-                                                <label class="form-check-label">Sản phẩm không tích lũy doanh số
-                                                    <input type="checkbox" class="form-check-input @error('khong_tich_luy_ds')
-                                                        is-invalid
-                                                        @enderror" value="1" name="khong_tich_luy_ds" @if(old('khong_tich_luy_ds')==="1" ) {{'checked'}} @endif>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        @error('khong_tich_luy_ds')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                        @enderror
+                                        <div class="row">
+    <!-- Cột trái -->
+    <div class="col-md-6">
+        <div class="card shadow-sm p-3 mb-3">
+            <h6 class="text-primary mb-3"><i class="fas fa-tags"></i> Loại sản phẩm</h6>
+
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('sp_khoi_nghiep') is-invalid @enderror" 
+                    value="1" name="sp_khoi_nghiep" id="sp_khoi_nghiep"
+                    @if(old('sp_khoi_nghiep')==="1") checked @endif>
+                <label class="form-check-label" for="sp_khoi_nghiep">SP Khởi nghiệp</label>
+                @error('sp_khoi_nghiep')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('is_tinh_diem') is-invalid @enderror"
+                    value="1" name="is_tinh_diem" id="is_tinh_diem"
+                    @if(old('is_tinh_diem')==="1") checked @endif>
+                <label class="form-check-label" for="is_tinh_diem">SP Tiêu dùng</label>
+                @error('is_tinh_diem')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+             {{--<div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('sp_tieu_dung') is-invalid @enderror"
+                    value="1" name="sp_tieu_dung" id="sp_tieu_dung"
+                    @if(old('sp_tieu_dung')==="1") checked @endif>
+                <label class="form-check-label" for="sp_tieu_dung">SP Tiêu dùng</label>
+                @error('sp_tieu_dung')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('hot') is-invalid @enderror"
+                    value="1" name="hot" id="hot"
+                    @if(old('hot')==="1") checked @endif>
+                <label class="form-check-label" for="hot">Sản phẩm giá sỉ</label>
+                @error('hot')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('gio_vang') is-invalid @enderror"
+                    value="1" name="gio_vang" id="gio_vang"
+                    @if(old('gio_vang')==="1") checked @endif>
+                <label class="form-check-label" for="gio_vang">Hiện sản phẩm Giờ vàng</label>
+                @error('gio_vang')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div> --}}
+        </div>
+    </div>
+
+    <!-- Cột phải -->
+    <div class="col-md-6">
+        <div class="card shadow-sm p-3 mb-3">
+            <h6 class="text-success mb-3"><i class="fas fa-cog"></i> Tùy chọn khác</h6>
+
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('het_hang') is-invalid @enderror"
+                    value="1" name="het_hang" id="het_hang"
+                    @if(old('het_hang')==="1") checked @endif>
+                <label class="form-check-label" for="het_hang">Hết hàng</label>
+                @error('het_hang')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+
+           
+
+            <div class="form-check mb-2">
+                <input type="checkbox" class="form-check-input @error('khong_tich_luy_ds') is-invalid @enderror"
+                    value="1" name="khong_tich_luy_ds" id="khong_tich_luy_ds"
+                    @if(old('khong_tich_luy_ds')==="1") checked @endif>
+                <label class="form-check-label" for="khong_tich_luy_ds">Không tích lũy doanh số</label>
+                @error('khong_tich_luy_ds')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+    </div>
+</div>
+
                                         <div class="form-group">
                                             <label class="control-label" for="">Số thứ tự</label>
                                             <input type="number" min="0" class="form-control  @error('order') is-invalid  @enderror" value="{{ old('order') }}" name="order" placeholder="Nhập số thứ tự">
@@ -325,8 +360,30 @@
 
 @endsection
 @section('js')
+<script>
+$(document).ready(function() {
+    // Khi người dùng nhập vào ô hiển thị
+    $('#price_display').on('input', function() {
+        // Lấy chỉ số (loại bỏ dấu phẩy, ký tự khác)
+        let rawValue = $(this).val().replace(/[^0-9]/g, '');
 
+        // Format lại có dấu phẩy cho người xem
+        if (rawValue) {
+            let formatted = parseInt(rawValue, 10).toLocaleString('vi-VN');
+            $(this).val(formatted);
+        } else {
+            $(this).val('');
+        }
 
+        // Gán giá trị thô (không dấu phẩy) vào input ẩn
+        $('#price').val(rawValue);
+    });
 
-
+    // Nếu load lại form có old value thì format sẵn
+    let oldVal = $('#price').val();
+    if (oldVal) {
+        $('#price_display').val(parseInt(oldVal, 10).toLocaleString('vi-VN'));
+    }
+});
+</script>
 @endsection

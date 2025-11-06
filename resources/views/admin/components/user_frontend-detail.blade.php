@@ -71,7 +71,7 @@
                         <span class="info-box-icon bg-info"><i class="fas fa-cart-plus"></i></span>
                         <div class="info-box-content">
                            <span class="info-box-text"> {{ $typePoint[$item->type]['name']  }}</span>
-                           <span class="info-box-number">{{ $item->total  }} <strong>điêm</strong></span>
+                           <span class="info-box-number">{{ number_format($item->total)  }} <strong></strong></span>
                         </div>
                      </div>
                 </div>

@@ -626,6 +626,71 @@ trait PointTrait
             }
         }
     }
+
+ public function addBonusBB($user, $product)
+{
+    $bonusRate = $product->phantramdiem / 100; // 40%
+    $minBonus = 1; 
+    $maxLevel = 10; // Giới hạn tối đa 10 cấp
+    $baseAmount = moneyToPoint($product->price);
+    $typePoint = config('point.typePoint');
+
+    // --- Thưởng BB bản thân ---
+    $currentBonus = $baseAmount * $bonusRate;
+    $user->points()->create([
+        'type' => $typePoint[1]['type'] ?? 1, // an toàn tránh lỗi offset
+        'point' => $currentBonus * getConfigBB(),
+        'active' => 1,
+        'userorigin_id' => $user->id,
+        'phantram' => $bonusRate * 100,
+    ]);
+    if($product->khong_tich_luy_ds == 0){
+        handlerAddPointDoanhSoNhom($user, $user, $baseAmount);
+        $levelNewUser = getLevel($user, $product->price);
+        $user->update([
+            'level' => $levelNewUser,
+            'total_money' => $user->total_money + $product->price,
+        ]);
+    }
+
+    // --- Các cấp cha ---
+    $currentUser = $user->parent;
+    $level = 1;
+    $currentTotal = $baseAmount;
+
+    while ($currentUser && $currentBonus >= $minBonus && $level <= $maxLevel) {
+        $currentBonus *= $bonusRate;
+        $currentTotal *= $bonusRate;
+
+        if ($currentBonus < $minBonus) break;
+
+        $currentUser->points()->create([
+            'type' => $typePoint[27]['type'] ?? 27, // sửa đúng loại thưởng của cha
+            'point' => $currentBonus * getConfigBB(),
+            'active' => 1,
+            'userorigin_id' => $user->id,
+            'phantram' => $bonusRate * 100,
+        ]);
+
+    if($product->khong_tich_luy_ds == 0){
+        handlerAddPointDoanhSoNhom($user, $currentUser, $currentTotal);
+
+        $levelNew = getLevel($currentUser, $product->price);
+        $currentUser->update([
+            'level' => $levelNew,
+            'total_money_group' => $currentUser->total_money_group + $product->price,
+        ]);
+    }
+
+        $currentUser = $currentUser->parent;
+        $level++;
+    }
+}
+
+
+
+
+
     public $resultArrayParentRecusive;
     public function recusiveParentUser($data, $user)
     {
@@ -666,4 +731,5 @@ trait PointTrait
             return collect($dataCheck)->where("level", "<", 1)->count() <= 0;
         } else return false;
     }
+
 }

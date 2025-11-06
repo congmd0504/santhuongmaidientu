@@ -66,9 +66,11 @@
                                                                     @if ($data->sale)
                                                                         {{ 'Sale ' . $data->sale . '%' }}
                                                                     @endif
+                                                                    @if($data->sale && $data->phantramdiem)
                                                                     -
-                                                                    @if ($data->phantramdiem)
-                                                                        {{ $data->phantramdiem . '%' }}(BB)
+                                                                    @endif
+                                                                    @if ($data->phantramdiem > 0 && $data->is_tinh_diem == 1)
+                                                                        {{ number_format($data->phantramdiem) . '%' }}(KTG)
                                                                     @endif
                                                                 </span>
                                                             </div>
@@ -341,12 +343,10 @@
                                                                 <div class="fs-goods__dt-btm">
                                                                     <div class="ld-price__flash-process new">
                                                                         <div class="ld-price__flash-process_left"
-                                                                            style="width: 30%;"></div>
+                                                                            style="width: 100%;"></div>
                                                                         <div class="ld-price__flash-process_right"></div>
                                                                     </div>
-                                                                    <div style="width: 100%; font-size: 12px;">
-                                                                        <span>30% Đã bán</span>
-                                                                    </div>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -139,7 +139,7 @@
                                             <th class="white-space-nowrap">Số lượt mua</th>
                                             <th class="white-space-nowrap">Avatar</th>
                                             <th class="white-space-nowrap">Active</th>
-                                            <th class="white-space-nowrap">SP sỉ</th>
+                                            <th class="white-space-nowrap">SP Khởi Nghiệp</th>
                                             <th class="white-space-nowrap">Thứ tự</th>
                                             <th class="white-space-nowrap">Danh mục</th>
                                             <th class="white-space-nowrap">Admin xử lý</th>
@@ -172,9 +172,9 @@
                                                         'type' => 'sản phẩm',
                                                     ])
                                                 </td>
-                                                <td class="wrap-load-hot"
-                                                    data-url="{{ route('admin.product.load.hot', ['id' => $productItem->id]) }}">
-                                                    @include('admin.components.load-change-hot', [
+                                                <td class="wrap-load-khoi-nghiep"
+                                                    data-url="{{ route('admin.product.load.khoi-nghiep', ['id' => $productItem->id]) }}">
+                                                    @include('admin.components.load-change-khoi-nghiep', [
                                                         'data' => $productItem,
                                                         'type' => 'sản phẩm',
                                                     ])

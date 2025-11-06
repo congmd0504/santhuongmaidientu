@@ -60,13 +60,28 @@ class Cart {
                 if (data.code === 200) {
                     $('.cart-wrapper').html(data.htmlcart);
                     $('#total-price-cart').text(data.totalPrice);
-                    alert('remove cart success');
+                   Swal.fire({
+                        icon: "success",
+                        title: "Xóa sản phẩm khỏi giỏ hàng thành công!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
                 } else {
-                    alert('remove cart error');
+                    Swal.fire({
+                        icon: "error",
+                        title: "Xóa sản phẩm khỏi giỏ hàng thất bại!",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
                 }
             },
             error: function() {
-
+                Swal.fire({
+                    icon: "error",
+                    title: "Xóa sản phẩm khỏi giỏ hàng thất bại!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
             }
         });
     }

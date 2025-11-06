@@ -86,9 +86,9 @@
                                 </td>
                              </tr>
                              <tr>
-                                <td>Tỷ lệ quy đổi BB  </td>
+                                <td>Tỷ lệ quy đổi KTG  </td>
                                 <td>
-                                1 BB =  {{  number_format(getConfigBB()) }}
+                                1 KTG =  {{  number_format(getConfigBB()) }}
                                 </td>
                              </tr>
                          </tbody>

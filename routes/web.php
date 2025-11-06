@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //Artisan::call('storage:link');
+Artisan::call('cache:clear');
 Route::get('test', function () {
 	// $a = bcrypt('1234567890');
 	// echo $a;

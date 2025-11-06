@@ -142,7 +142,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <script type="text/javascript" src="{{ asset('frontend/js/main.js') }}"></script>
     <script src="{{ asset('lib/components/js/Cart.js') }}"></script>
     @yield('js')
-	
+
 </body>
 
 </html>

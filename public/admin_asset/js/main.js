@@ -273,6 +273,41 @@ $(function () {
             }
         })
     });
+     $(document).on('click', '.lb-khoi-nghiep', function () {
+        event.preventDefault();
+        let wrapActive = $(this).parents('.wrap-load-khoi-nghiep');
+        let urlRequest = wrapActive.data("url");
+        let value = $(this).data("value");
+        let type = $(this).data("type");
+        let title = '';
+        if (value) {
+            title = 'Bạn có chắc chắn muốn bỏ ' + type + ' khởi nghiệp';
+        } else {
+            title = 'Bạn có chắc chắn muốn chuyển ' + type + ' sang sản phẩm khởi nghiệp';
+        }
+        Swal.fire({
+            title: title,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, next step!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    url: urlRequest,
+                    success: function (data) {
+                        if (data.code == 200) {
+                            let html = data.html;
+                            wrapActive.html(html);
+                        }
+                    }
+                });
+            }
+        })
+    });
+
 
     // js load change trạng thái hot và active
     $(document).on('change', '.lb-order', function () {

@@ -260,11 +260,11 @@ class AdminUserFrontendController extends Controller
 
         $sumEachType = collect([
             [
-                'name' => 'Ví BB',
+                'name' => 'Ví KTG',
                 "total" => 0,
                 'listType' => config("point.listTypePointMH"),
                 'class' => 'bg-info',
-                'donvi' => 'BB'
+                'donvi' => 'KTG'
             ],
 
             [

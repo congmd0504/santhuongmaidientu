@@ -489,24 +489,24 @@
                 @endif--}}
                 <div class="checkLevel">
                     <div class="total-point d-flex align-items-center justify-content-between  bgr-chan">
-                        <span class="name" style = "font-weight: 600;">Số dư trong ví BB:</span>
+                        <span class="name" style = "font-weight: 600;">Số dư trong ví KTG:</span>
                         <span class="total-point-number"> {{ number_format($sumPointCurrent) }}
                             <strong>{{ $pointUnit ?? '' }}</strong></span>
                     </div>
                     <div class="total-point d-flex align-items-center justify-content-between  bgr-le">
                         <span class="name" style = "font-weight: 600;">
-                            Số BB cần để mua đơn hàng:
+                            Số KTG cần để mua đơn hàng:
                         </span>
                         <span class="total-point-number"> {{ number_format($totalPointAccessUse) }}
                             <strong>{{ $pointUnit ?? '' }}</strong></span>
                     </div>
                     <div class="form-inline justify-content-end bgr-chan">
-                        <label for="" class="mr-sm-2" style = "font-weight: 600; none">Sử dụng BB:</label>
+                        <label for="" class="mr-sm-2" style = "font-weight: 600; none">Sử dụng KTG:</label>
                         <div class="d-inline-block">
                             @if($sumPointCurrent > $totalPointAccessUse || $sumPointCurrent == $totalPointAccessUse)
                                 <input type="number"
                                        class="form-control mr-sm-2  @isset($errorNumberPoint)  @if ($errorNumberPoint){{ 'is-invalid' }} @endif   @endisset    @error('usePoint') {{ 'is-invalid' }}  @enderror"
-                                       placeholder="Nhập số BB"
+                                       placeholder="Nhập số KTG"
                                        data-url="{{ route('cart.update', [
                                         'id' => 0,
                                     ]) }}"
@@ -514,7 +514,7 @@
                             @elseif($sumPointCurrent < $totalPointAccessUse)
                                 <input type="number"
                                        class="form-control mr-sm-2  @isset($errorNumberPoint)  @if ($errorNumberPoint){{ 'is-invalid' }} @endif   @endisset    @error('usePoint') {{ 'is-invalid' }}  @enderror"
-                                       placeholder="Nhập số BB"
+                                       placeholder="Nhập số KTG"
                                        data-url="{{ route('cart.update', [
                                         'id' => 0,
                                     ]) }}"
@@ -567,11 +567,12 @@
                     <span class="name" style = "font-weight: 600;">Chi trả bằng tiền mặt:</span>
 
                     <span class="total-price">
+                        @if($totalOldPrice >  $totalPriceMoney )
                         <span class="total-provisional-price text-line-through" style="text-decoration: line-through;color: gray;
                     font-size: 12px;">
                             {{ number_format($totalOldPrice ?? 0) }}{{ $unit ?? '' }}
                         </span>
-
+                        @endif
                         <span id="total-price-money-cart">
                             {{ number_format($totalPriceMoney ?? 0) }}
                         </span>

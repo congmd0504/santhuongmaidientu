@@ -81,11 +81,11 @@ function getLevel($user, $money)
 {
     $setting = new Setting();
     $listSetting = $setting->where('parent_id', 115)->get();
-    $setLv1 = optional($listSetting->find(116))->value ?? 0;
-    $setLv2 = optional($listSetting->find(117))->value ?? 0;
+    // $setLv1 = optional($listSetting->find(116))->value ?? 0;
+    // $setLv2 = optional($listSetting->find(117))->value ?? 0;
     $setLv3 = optional($listSetting->find(118))->value ?? 0;
-    $setLv4 = optional($listSetting->find(119))->value ?? 0;
-    $setLv5 = optional($listSetting->find(120))->value ?? 0;
+    // $setLv4 = optional($listSetting->find(119))->value ?? 0;
+    // $setLv5 = optional($listSetting->find(120))->value ?? 0;
     
     // ds = ds nhom + ds ca nhan
     // $currentMoney = $user->total_money + $money + $user->total_money_group;
@@ -93,92 +93,97 @@ function getLevel($user, $money)
     // UPDATE LẠI CƠ CHẾ CHỈ CỘNG DOANH SỐ CÁ NHÂN ĐỂ LÊN CẤP 8/2/2024
     $currentMoney = $user->total_money + $money;
     $level = 0;
-    if ($currentMoney >= $setLv5) {
-        $level = 5;
-    } else if ($currentMoney >= $setLv4) {
-        $level = 4;
-    } else  if ($currentMoney >= $setLv3) {
-        $level = 3;
-    } else  if ($currentMoney >= $setLv2) {
+
+    // if ($currentMoney >= $setLv5) {
+    //     $level = 4;
+    // } else if ($currentMoney >= $setLv4) {
+    //     $level = 3;
+    // } else  if ($currentMoney >= $setLv3) {
+    //     $level = 2;
+    // }  else  if ($currentMoney >= $setLv1) {
+    //     $level = 1;
+    // }
+
+    //  lên hạng khởi nghiệp
+    if ($currentMoney >= $setLv3) {
         $level = 2;
-    } else  if ($currentMoney >= $setLv1) {
-        $level = 1;
-    }
+    } 
+
     if ($user->level > $level) {
         $level = $user->level;
     }
     //Thưởng cấp BB
-    $thuongCap = $user->thuong_cap;
+    // $thuongCap = $user->thuong_cap;
 
-    if($level > $thuongCap){
-        $typePoint = config('point.typePoint');
-        $thanhTien = getConfigBB();//1BB = 1000
-        if ($level == 5) {
+    // if($level > $thuongCap){
+    //     $typePoint = config('point.typePoint');
+    //     $thanhTien = getConfigBB();//1BB = 1000
+    //     if ($level == 5) {
 
-            $user->points()->create([
-                'type' => $typePoint[20]['type'],
-                'point' => 200000 * $thanhTien,
-                'active' => 1,
-                'userorigin_id' => $user->id,
-            ]);
-            $dataUserUpdateCap = [
-                "thuong_cap" => $level,
-            ];
-            $user->update($dataUserUpdateCap);
+    //         $user->points()->create([
+    //             'type' => $typePoint[20]['type'],
+    //             'point' => 200000 * $thanhTien,
+    //             'active' => 1,
+    //             'userorigin_id' => $user->id,
+    //         ]);
+    //         $dataUserUpdateCap = [
+    //             "thuong_cap" => $level,
+    //         ];
+    //         $user->update($dataUserUpdateCap);
 
-        } else if ($level == 4) {
+    //     } else if ($level == 4) {
 
-            $user->points()->create([
-                'type' => $typePoint[20]['type'],
-                'point' => 75000 * $thanhTien,
-                'active' => 1,
-                'userorigin_id' => $user->id,
-            ]);
-            $dataUserUpdateCap = [
-                "thuong_cap" => $level,
-            ];
-            $user->update($dataUserUpdateCap);
+    //         $user->points()->create([
+    //             'type' => $typePoint[20]['type'],
+    //             'point' => 75000 * $thanhTien,
+    //             'active' => 1,
+    //             'userorigin_id' => $user->id,
+    //         ]);
+    //         $dataUserUpdateCap = [
+    //             "thuong_cap" => $level,
+    //         ];
+    //         $user->update($dataUserUpdateCap);
 
-        } else if ($level == 3) {
+    //     } else if ($level == 3) {
 
-            $user->points()->create([
-                'type' => $typePoint[20]['type'],
-                'point' => 22000 * $thanhTien,
-                'active' => 1,
-                'userorigin_id' => $user->id,
-            ]);
-            $dataUserUpdateCap = [
-                "thuong_cap" => $level,
-            ];
-            $user->update($dataUserUpdateCap);
+    //         $user->points()->create([
+    //             'type' => $typePoint[20]['type'],
+    //             'point' => 22000 * $thanhTien,
+    //             'active' => 1,
+    //             'userorigin_id' => $user->id,
+    //         ]);
+    //         $dataUserUpdateCap = [
+    //             "thuong_cap" => $level,
+    //         ];
+    //         $user->update($dataUserUpdateCap);
 
-        } else if ($level == 2) {
+    //     } else if ($level == 2) {
 
-            $user->points()->create([
-                'type' => $typePoint[20]['type'],
-                'point' => 10000 * $thanhTien,
-                'active' => 1,
-                'userorigin_id' => $user->id,
-            ]);
-            $dataUserUpdateCap = [
-                "thuong_cap" => $level,
-            ];
-            $user->update($dataUserUpdateCap);
+    //         $user->points()->create([
+    //             'type' => $typePoint[20]['type'],
+    //             'point' => 10000 * $thanhTien,
+    //             'active' => 1,
+    //             'userorigin_id' => $user->id,
+    //         ]);
+    //         $dataUserUpdateCap = [
+    //             "thuong_cap" => $level,
+    //         ];
+    //         $user->update($dataUserUpdateCap);
 
-        } else  if ($level == 1) {
+    //     } else  if ($level == 1) {
 
-            $user->points()->create([
-                'type' => $typePoint[20]['type'],
-                'point' => 2000 * $thanhTien,
-                'active' => 1,
-                'userorigin_id' => $user->id,
-            ]);
-            $dataUserUpdateCap = [
-                "thuong_cap" => $level,
-            ];
-            $user->update($dataUserUpdateCap);
-        }
-    }
+    //         $user->points()->create([
+    //             'type' => $typePoint[20]['type'],
+    //             'point' => 2000 * $thanhTien,
+    //             'active' => 1,
+    //             'userorigin_id' => $user->id,
+    //         ]);
+    //         $dataUserUpdateCap = [
+    //             "thuong_cap" => $level,
+    //         ];
+    //         $user->update($dataUserUpdateCap);
+    //     }
+    // }
 
     return $level;
 }
@@ -186,21 +191,18 @@ function getTenLevel($level)
 {
     switch ($level) {
         case 0:
-            return "Khách hàng";
+            return "Khách hàng mới";
             break;
         case 1:
-            return "Cộng tác viên"; // Thành viên
+            return "Người tiêu dùng thông minh"; // Thành viên
             break;
         case 2:
-            return "Đại lý";
+            return "Khởi nghiệp";
             break;
         case 3:
-            return "Trưởng nhóm KD"; // Giám đốc TT
+            return "Quản lý"; // Giám đốc TT
             break;
         case 4:
-            return "Trưởng phòng KD"; // Giám đốc vùng
-            break;
-        case 5:
             return "Giám đốc vùng";
             break;
         default:
@@ -212,19 +214,7 @@ function getMotaLevel($level)
 {
     switch ($level) {
         case 0:
-            return "Bạn cần tiêu dùng 2 triệu để lên hạng Khách hàng thân thiết";
-            break;
-        case 1:
-            return "Doanh số cá nhân đạt 10 triệu để lên Đại Lý";
-            break;
-        case 2:
-            return "Doanh số cá nhân đạt 50 triệu để lên Trưởng Nhóm Kinh Doanh";
-            break;
-        case 3:
-            return "Doanh số cá nhân đạt 200 triệu để lên hạng Trưởng Phòng Kinh Doanh";
-            break;
-        case 4:
-            return "Doanh số cá nhân đạt 500 triệu để lên hạng Giám Đốc Vùng";
+            return "Doanh số cá nhân đạt 5 triệu để lên thành viên Khởi Nghiệp";
             break;
         default:
             return "";
@@ -236,13 +226,16 @@ function getPhanTramGiamGiaLevel($level)
 {
     $setting = new Setting();
     $listSetting = $setting->where('parent_id', 103)->get();
-    $setLv1 = optional($listSetting->find(104))->value ?? 0;
-    $setLv2 = optional($listSetting->find(105))->value ?? 0;
-    $setLv3 = optional($listSetting->find(106))->value ?? 0;
-    $setLv4 = optional($listSetting->find(107))->value ?? 0;
-    $setLv5 = optional($listSetting->find(108))->value ?? 0;
+    $setLv0 = optional($listSetting->find(104))->value ?? 0;
+    $setLv1 = optional($listSetting->find(105))->value ?? 0;
+    $setLv2 = optional($listSetting->find(106))->value ?? 0;
+    $setLv3 = optional($listSetting->find(107))->value ?? 0;
+    $setLv4 = optional($listSetting->find(108))->value ?? 0;
 
     switch ($level) {
+        case 0:
+            return $setLv0;
+            break;
         case 1:
             return $setLv1;
             break;
@@ -255,9 +248,6 @@ function getPhanTramGiamGiaLevel($level)
         case 4:
             return $setLv4;
             break;
-        case 5:
-            return $setLv5;
-            break;
         default:
             return 0;
             break;
@@ -268,31 +258,29 @@ function getPhanTramMotaGiamGiaLevel($level)
 {
     $setting = new Setting();
     $listSetting = $setting->where('parent_id', 103)->get();
-    $setLv1 = optional($listSetting->find(104))->value ?? 0;
-    $setLv2 = optional($listSetting->find(105))->value ?? 0;
-    $setLv3 = optional($listSetting->find(106))->value ?? 0;
-    $setLv4 = optional($listSetting->find(107))->value ?? 0;
-    $setLv5 = optional($listSetting->find(108))->value ?? 0;
+    $setLv0 = optional($listSetting->find(104))->value ?? 0;
+    $setLv1 = optional($listSetting->find(105))->value ?? 0;
+    $setLv2 = optional($listSetting->find(106))->value ?? 0;
+    $setLv3 = optional($listSetting->find(107))->value ?? 0;
+    $setLv4 = optional($listSetting->find(108))->value ?? 0;
 
     switch ($level) {
         case 0:
-            return "Bạn hãy nâng cấp lên CTV để được hưởng các chính sách ưu đãi";
+           return "Bạn được chi trả " . $setLv0 . "% bằng ví KTG các sản phẩm tích lũy Vì đang ở là khách hàng mới";
             break;
         case 1:
-            return "Bạn được chi trả " . $setLv1 . "% bằng ví BB các sản phẩm tích lũy vì đang là cộng tác viên";
+            return "Bạn được chi trả " . $setLv1 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Người tiêu dùng thông minh";
             break;
         case 2:
-            return "Bạn được chi trả " . $setLv2 . "% bằng ví BB các sản phẩm tích lũy vì đang là đại lý";
+            return "Bạn được chi trả " . $setLv2 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Khởi Nghiệp";
             break;
         case 3:
-            return "Bạn được chi trả " . $setLv3 . "% bằng ví BB các sản phẩm tích lũy vì đang là trưởng nhóm KD";
+            return "Bạn được chi trả " . $setLv3 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Quản lý";
             break;
         case 4:
-            return "Bạn được chi trả " . $setLv4 . "% bằng ví BB các sản phẩm tích lũy vì đang là Trưởng phòng KD";
+            return "Bạn được chi trả " . $setLv4 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Giám đốc vùng";
             break;
-        case 5:
-            return "Bạn được chi trả " . $setLv5 . "% bằng ví BB các sản phẩm tích lũy Vì đang ở là giám đốc vùng";
-            break;
+           
         default:
             return "";
             break;
@@ -602,4 +590,15 @@ function getConfigBB()
     $setting = new Setting();
     return $setting->find(121)->value ?? 0;
 }
+function getConfigWallet()
+{
+    $setting = new Setting();
+    return $setting->find(133)->value ?? 0;
+}
+function getConfigGift()
+{
+    $setting = new Setting();
+    return $setting->find(134)->value ?? 0;
+}
+
 

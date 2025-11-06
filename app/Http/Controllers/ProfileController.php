@@ -76,13 +76,13 @@ class ProfileController extends Controller
         $user = auth()->guard()->user();
         //  dd($user);
 
-        $sumEachType = collect([
+       $sumEachType = collect([
             [
-                'name' => 'Ví BB',
+                'name' => 'Ví KTG',
                 "total" => 0,
                 'listType' => config("point.listTypePointMH"),
                 'class' => 'bg-info',
-                'donvi' => 'BB'
+                'donvi' => 'KTG'
             ],
 
             [
@@ -93,38 +93,37 @@ class ProfileController extends Controller
                 'donvi' => 'đ',
             ],
 
-//            [
-//                'name' => 'Doanh số cá nhân',
-//                "total" => 0,
-//                'listType' => [1],
-//                'class' => 'bg-info',
-//                'donvi' => 'đ',
-//            ],
+            [
+                'name' => 'Ví Đặt Cọc',
+                "total" => 0,
+                'listType' => [1], // không dùng trong sumEachTypeData
+                'class' => 'bg-info',
+                'donvi' => 'đ',
+            ],
         ]);
 
-
         $sumEachTypeData = collect($this->point->sumEachTypeFrontend($user->id));
+
         $sumEachType = $sumEachType->map(function ($item) use ($sumEachTypeData) {
-            $item['total'] = $sumEachTypeData->whereIn('type', $item['listType'])->sum("total");
-            // if ($itemSumType) {
-            //     $item['total'] = $itemSumType['total'];
-            // }
+            $item['total'] = $sumEachTypeData->whereIn('type', $item['listType'])->sum("total") ;
             return $item;
         });
-        // dd($sumEachType);
+
+        $sumDepositWallet = \App\Models\DepositWallet::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->sum('remaining_amount');
+
+        $sumEachType = $sumEachType->map(function ($item) use ($sumDepositWallet) {
+            if ($item['name'] === 'Ví Đặt Cọc') {
+                $item['total'] = $sumDepositWallet;
+            }
+            return $item;
+        });
+
         $sumPointCurrent = $this->point->sumPointCurrent($user->id);
 
-        // dd($sumPointCurrent);
-        // $numberPointRose = $user->points()->select($this->transaction->raw('count(status) as total'), 'status')->groupBy('status')->get();
-        //  $numberPointRose=1;
-        //  dd($numberPointRose);
-        if (date('d') >= $this->datePay['start'] && date('d') <= $this->datePay['end']) {
-            $openPay = true;
-        } else {
-            $openPay = false;
-        }
-        //   dd($openPay);
-        // dd($sumEachType);
+        $openPay = (date('d') >= $this->datePay['start'] && date('d') <= $this->datePay['end']);
+
         return view('frontend.pages.profile', [
             'user' => $user,
             'sumEachType' => $sumEachType,

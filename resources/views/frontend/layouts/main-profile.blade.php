@@ -820,7 +820,7 @@ a.btn-dow {
                                             <p> Danh sách thành viên</p>
                                         </a>
                                     </li>
-                                    {{-- <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" href="{{ route('profile.createMember') }}">
                                         <i class="fas fa-user-plus"></i>
                                     <p> Thêm thành viên</p>
@@ -833,11 +833,11 @@ a.btn-dow {
                                         </a>
                                     </li>
                                     {{-- <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('profile.history-draw-point') }}">
-                                        <i class="fas fa-cart-plus"></i>
-                                        <p>Lịch sử rút điểm</p>
-                                    </a>
-                                </li> --}}
+                                        <a class="nav-link" href="{{ route('profile.history-draw-point') }}">
+                                            <i class="fas fa-cart-plus"></i>
+                                            <p>Lịch sử rút điểm</p>
+                                        </a>
+                                    </li> --}}
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('profile.momoPayment') }}">
                                             <i class="fas fa-cart-plus"></i>
@@ -847,7 +847,7 @@ a.btn-dow {
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('profile.index', ['type' => 2]) }}">
                                             <i class="fas fa-list"></i>
-                                            <p>Nạp BB bằng Ví VNĐ</p>
+                                            <p>Nạp KTG bằng Ví VNĐ</p>
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -859,7 +859,7 @@ a.btn-dow {
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{ route('profile.lichSuRutTien') }}">
                                             <i class="fas fa-cart-plus"></i>
-                                            <p>Lịch s rút tiền</p>
+                                            <p>Lịch sử rút tiền</p>
                                         </a>
                                     </li>
                                 </ul>
@@ -868,7 +868,7 @@ a.btn-dow {
                                 document.addEventListener('DOMContentLoaded', function() {
                                     // Lắng nghe sự kiện click trên nt button
                                     document.getElementById('toggleButton').addEventListener('click', function() {
-                                        // Chọn phần tử nav có lớp sodu-desktop
+                                        // Chọn phần tử nav có lớp  sodu-desktop
                                         var navElement = document.querySelector('.sodu-desktop');
                                         // Toggle lớp sodu-desktop
                                         navElement.classList.toggle('activeNew');
@@ -880,8 +880,8 @@ a.btn-dow {
                         <div class="pd-profile">
                             <nav class="mt-2 background-color-white sodu-mobile border-radius-5">
                                 <div class="title-sodu">
-                                    <h6>Số dư v BB</h6>
-                                    <span class="">{{ number_format($user->points()->where('active', 1)->whereIn('type', config('point.listTypePointMH'))->get()->sum('point')/getConfigBB()) }} BB<i
+                                    <h6>Số dư v KTG</h6>
+                                    <span class="">{{ number_format($user->points()->where('active', 1)->whereIn('type', config('point.listTypePointMH'))->get()->sum('point')/getConfigBB()) }} KTG<i
                                             class="fas fa-angle-right"></i>
                                         </span>
                                 </div>
@@ -1019,11 +1019,17 @@ a.btn-dow {
                                 </ul>
                             </nav>
                         </div>
-                        <div class="pd-profile-2 display-flex ">
-                           
+                        <div class="pd-profile-2 display-flex">
+                            <div class="alert alert-success hidden-scroll" style="display: none">
+                                <input type="text"
+                                    value="{{ route('profile.register-referral.create', ['code' => $user->code]) }}"
+                                    id="myInput"
+                                    style="background-color: transparent; border: unset;">
+                            </div>
 
                             <button class="btn btn-info btn-coppy-link" onclick="myFunction()">Copy link</button>
-                             <button class="btn btn-info btn-back-link">Trờ về trang trước</button>
+                            <button class="btn btn-primary btn-coppy-link" onclick="showReferralQR()">Mã giới thiệu</button>
+                            <button class="btn btn-danger btn-back-link" onclick="window.history.back()">Trang trước</button>
                         </div>
                     </div>
                 </div>
@@ -1034,6 +1040,16 @@ a.btn-dow {
         </div>
 
     </div>
+
+<div id="qrModal" class="modal" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; 
+    background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:9999;">
+    <div style="background:#fff; padding:20px; border-radius:12px; text-align:center; position:relative; width:320px;">
+        <h4>Mã giới thiệu của bạn</h4>
+        <div id="qrcode" style="margin: 20px auto;"></div>
+        <button id="downloadQR" class="btn btn-success">Tải mã QR</button>
+        <button class="btn btn-secondary" onclick="closeQRModal()" style="margin-left:10px;">Đóng</button>
+    </div>
+</div>
 
 <script>
   document.querySelector('.btn-back-link').addEventListener('click', function () {
@@ -1063,13 +1079,85 @@ a.btn-dow {
 <script src="{{ asset('lib/components/js/Cart.js') }}"></script>
 <script src="{{ asset('admin_asset/js/jquery.number.js') }}"></script>
 <script>
-    function myFunction() {
-        var copyText = document.getElementById("myInput");
-        copyText.select();
-        copyText.setSelectionRange(0, 99999)
+function myFunction() {
+    const text = document.getElementById("myInput").value;
+
+    // Kiểm tra trình duyệt hỗ trợ Clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Đã sao chép",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            })
+            .catch(err => {
+                console.error("Lỗi khi sao chép:", err);
+                Swal.fire({
+                    icon: "error",
+                    title: "Trình duyệt không cho phép sao chép!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+            });
+    } else {
+        // Trình duyệt cũ → fallback
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
         document.execCommand("copy");
-        //   alert("Copied the text: " + copyText.value);
+        document.body.removeChild(temp);
+        Swal.fire({
+            icon: "success",
+            title: "Đã sao chép",
+            showConfirmButton: false,
+            timer: 1500,
+        });
     }
+}
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+    const referralUrl = @json(route('profile.register-referral.create', ['code' => $user->code]));
+    let qrGenerated = false; // để tránh tạo lại nhiều lần
+
+    function showReferralQR() {
+        const modal = document.getElementById('qrModal');
+        modal.style.display = 'flex';
+
+        // Tạo QR code nếu chưa có
+        if (!qrGenerated) {
+            new QRCode(document.getElementById("qrcode"), {
+                text: referralUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            qrGenerated = true;
+        }
+
+        // Xử lý nút tải QR
+        document.getElementById('downloadQR').onclick = function() {
+            const qrCanvas = document.querySelector("#qrcode canvas");
+            const link = document.createElement("a");
+            link.download = "ma-gioi-thieu.png";
+            link.href = qrCanvas.toDataURL("image/png");
+            link.click();
+        };
+    }
+
+    function closeQRModal() {
+        document.getElementById('qrModal').style.display = 'none';
+    }
+
+
 </script>
 @yield('js')
 </body>

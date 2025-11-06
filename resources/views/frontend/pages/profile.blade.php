@@ -109,14 +109,14 @@
 
                     @isset($sumEachType)
                         @foreach ($sumEachType as $item)
-                            <div class="col-md-{{ $openPay ? '6' : '12' }} col-sm-12">
+                            <div class="col-md-{{ $openPay ? '4' : '12' }} col-sm-12">
                                 <div class="info-box">
                                     <span class="info-box-icon {{ $item['class'] }}"><i class="fas fa-cart-plus"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text"> {{ $item['name'] }}</span>
                                         <span class="info-box-number">
                                             <strong>
-                                                @if($item['name'] == 'Ví BB')
+                                                @if($item['name'] == 'Ví KTG')
                                                     {{ number_format($item['total']/getConfigBB()) }}
                                                 @else
                                                     {{ number_format($item['total']) }}
@@ -199,7 +199,7 @@
                                         <div class="col-md-12 col-xs-12">
                                             <div class="card card-outline card-primary">
                                                 <div class="card-header">
-                                                    <h3 class="card-title">Đổi VNĐ sang BB</h3>
+                                                    <h3 class="card-title">Đổi VNĐ sang KTG</h3>
                                                     {{-- <div class="desc">Rút điểm chỉ được mở từ ngày 1- 2 hàng tháng</div> --}}
                                                 </div>
                                                 <div class="card-body table-responsive p-3">
@@ -260,7 +260,7 @@
                                                     </div>
                                                     @isset($sumEachType)
                                                         @foreach ($sumEachType as $item)
-                                                            @if($item['name'] !== 'Ví BB')
+                                                            @if($item['name'] !== 'Ví KTG')
                                                                 <input name="check_vivnd" value="{{ $item['total'] }}" type="number" hidden>
                                                             @endif
                                                         @endforeach
@@ -322,12 +322,12 @@
                                     <div class="col-md-12 col-xs-12">
                                         <div class="card card-outline card-primary">
                                             <div class="card-header">
-                                                <h3 class="card-title">Chuyển BB</h3>
+                                                <h3 class="card-title">Chuyển KTG</h3>
                                                 {{-- <div class="desc">Rút điểm chỉ được mở từ ngày 1- 2 hàng tháng</div> --}}
                                             </div>
                                             <div class="card-body table-responsive p-3">
                                                 <div class="form-group">
-                                                    <label for="">Nhập số BB cần chuyển</label>
+                                                    <label for="">Nhập số KTG cần chuyển</label>
                                                     <input type="text" class="form-control jsFormatNumber"
                                                            name="BB" placeholder="Nhập số điểm"
                                                            oninput="format_curency(this);" type="text"

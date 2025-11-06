@@ -59,13 +59,15 @@
                 <div class="card card-outline card-primary">
                     <div class="card-body table-responsive lb-list-category">
                         @include('admin.components.category', [
-                            'data' => $data,
-                            'routeNameEdit'=>'admin.categoryproduct.edit',
-                            'routeNameAdd'=>'admin.categoryproduct.create',
-                            'routeNameDelete'=>'admin.categoryproduct.destroy',
-                            'routeNameOrder' => 'admin.loadOrderVeryModel',
-                            'table'=>'category_products',
-                        ])
+                                    'data' => $data,
+                                    'routeNameEdit' => 'admin.categoryproduct.edit',
+                                    'routeNameAdd' => 'admin.categoryproduct.create',
+                                    'routeNameDelete' => 'admin.categoryproduct.destroy',
+                                    'routeNameOrder' => 'admin.loadOrderVeryModel',
+                                    'routeLoadActive' => 'admin.categoryproduct.load.active',
+                                    'routeLoadHot' => 'admin.categoryproduct.load.hot',
+                                    'table' => 'category_products',
+                                ])
                     </div>
                 </div>
             </div>

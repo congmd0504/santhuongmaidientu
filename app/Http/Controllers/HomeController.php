@@ -105,7 +105,7 @@ class HomeController extends Controller
         $productsGioVang = $this->product->where([
             ['active', 1],
             ['price', '>', 0],
-            ['gio_vang', 1],
+            ['category_id', 102],
 
         ])->orderBy('order')->latest()->limit(14)->get();
         $km_news = $this->categoryPost->find(21);

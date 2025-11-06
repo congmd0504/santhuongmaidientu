@@ -61,6 +61,8 @@ trait GetDataTrait
             'active' => 1,
         ])->pluck('id');
 
+         $header['nang_cap'] = $categoryProduct->find(102);
+
         foreach ($listCategoryPost as $id) {
             array_push($menu, menuRecusive($categoryPost, $id));
         }

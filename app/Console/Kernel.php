@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+       $schedule->command('wallet:release-monthly')->monthlyOn(1, '00:00');
     }
 
     /**

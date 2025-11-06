@@ -44,7 +44,7 @@
                                 <span class="info-box-text"> {{ $item['name'] }}</span>
                                 <span class="info-box-number">
                                         <strong>
-                                            @if($item['name'] == 'Ví BB')
+                                            @if($item['name'] == 'Ví KTG')
                                                 {{ number_format($item['total']/getConfigBB()) }}
                                             @else
                                                 {{ number_format($item['total']) }}

@@ -88,17 +88,17 @@
         }
 
         @media(max-width:550px) {
-
+        /* 
             .col-lg-3:first-child,
             .col-md-3:first-child,
             .col-sm-3:first-child,
             .col-3:first-child {
                 padding-left: 10px;
                 padding-right: 5px;
-            }
+            } */
 
 
-            .col-lg-3:nth-child(3),
+            /* .col-lg-3:nth-child(3),
             .col-md-3:nth-child(3),
             .col-sm-3:nth-child(3),
             .col-3:nth-child(3),
@@ -108,15 +108,15 @@
             .col-3:nth-child(2) {
                 padding-left: 5px;
                 padding-right: 5px;
-            }
+            } */
 
-            .col-lg-3:nth-child(4),
+            /* .col-lg-3:nth-child(4),
             .col-md-3:nth-child(4),
             .col-sm-3:nth-child(4),
             .col-3:nth-child(4) {
                 padding-left: 5px;
                 padding-right: 10px;
-            }
+            } */
 
             .row.desktop-sp-new {
                 display: none;
@@ -228,11 +228,11 @@
             @endif
             <section class="section_product_new section_giovang">
                 <div class="container ">
-                    <div class="  item-section_giovang">
+                    <div class="item-section_giovang">
                         <div class="col-sm-12 col-12">
                             <div class="title-flash-sale">
                                 <h2 class="title-block">
-                                    GIỜ VÀNG DEAL SỐC
+                                    MUA HÀNG TẶNG TIỀN 100%
                                 </h2>
                                 <div class="example">
                                     <p>Kết thúc sau:</p>
@@ -245,9 +245,9 @@
                                 @if (isset($productsGioVang) && $productsGioVang->count() > 0)
                                     <div class="swiper-container">
                                         <div class="slider slide6_row2b cate_rows">
-                                            @php
-                                                $chunks = $productsGioVang->chunk(1);
-                                            @endphp
+                                        @php
+                                            $chunks = $productsGioVang->chunk(1);
+                                        @endphp
                                             @foreach ($chunks as $items)
                                                 <div class="swiper-slide">
                                                     @foreach ($items as $item)
@@ -414,7 +414,7 @@
                             <div class="group-title">
                                 <h3 class="title title-underline">Sản phẩm</h3>
                             </div>
-                            <div class="row desktop-sp-new">
+                            <div class="row">
                                 @isset($productHot)
                                     @foreach ($productHot as $product)
                                         <div class="col-2dot4 col-md-3 col-sm-6 col-xs-6 col-6 ">
@@ -433,9 +433,9 @@
                                                                         {{ 'Sale ' . $product->sale . '%' }}
                                                                     @endif
                                                                 </span>
-                                                                @if ($product->phantramdiem > 0)
+                                                                @if ($product->phantramdiem > 0 && $product->is_tinh_diem == 1)
                                                                 <span class="sale-acstion2">
-                                                                    - {{ intval($product->phantramdiem) }}%(BB)
+                                                                     {{ intval($product->phantramdiem) }}%(KTG)
                                                                 </span>
                                                                     @endif
                                                             @endif
@@ -469,63 +469,7 @@
                                     @endforeach
                                 @endisset
                             </div>
-                            <div class="row mobile-sp-new">
-                                <div class="swiper-container">
-                                    <div class="row slider  cate_rows">
-                                        @foreach ($productHot as $item)
-                                            <div class="col-6">
-                                                <div class="item_product_main" data-url="{{ $item->slug_full }}"
-                                                    data-id="{{ $item->id }}">
-                                                    <div class="product-thumbnail">
-                                                    @if ($item->sale > 0 || $item->phantramdiem > 0)
-                                                                <span class="sale-acstion">
-                                                                    @if ($item->sale > 0)
-                                                                        {{ 'Sale ' . $item->sale . '%' }}
-                                                                    @endif
-                                                                </span>
-                                                                @if ($item->phantramdiem > 0)
-                                                                <span class="sale-acstion2">
-                                                                    - {{ intval($item->phantramdiem) }}%(BB)
-                                                                </span>
-                                                                    @endif
-                                                            @endif
-                                                        <a class="image_thumb" href="{{ $item->slug_full }}"
-                                                            title="{{ $item->name }}">
-                                                            <img class="lazyload" src="{{ asset($item->avatar_path) }}"
-                                                                alt="{{ $item->name }}" />
-                                                        </a>
-                                                        <div class="image-tools">
-                                                            <a class="quickView styleBtnBuy add-to-cart" data-url="{{ route('cart.add', ['id' => $item->id]) }}"><i
-                                                                    class="fa fa-cart-plus"></i> Đặt hàng </a>
-                                                            <a class="styleBtnBuy" href="{{ $item->slug_full }}"><i
-                                                                    class="fa fa-eye"></i> Xem chi tiết</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-info">
-                                                        <h3 class="product-name">
-                                                            <a href="{{ $item->slug_full }}"
-                                                                title="{{ $item->name }}">{{ $item->name }}</a>
-                                                        </h3>
-                                                        <div class="bottom-action">
-                                                            <div class="price-box">
-                                                                @if ($item->sale > 0)
-                                                                    <span
-                                                                        class="compare-price">{{ number_format($item->price) }}{{ $unit }}</span>
-                                                                @endif
-                                                                <div>
-                                                                    <span
-                                                                        class="price">{{ $item->price ? number_format($item->price_after_sale) . 'đ' : 'Liên hệ' }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-
-                                    </div>
-                                </div>
-                            </div>
+                            
                             {{-- <div class="box-view-all hidden-xs hidden-sm box-view-all-mobile">
                                 <a href="{{ route('product.new') }}" class="view-all">Xem tất cả <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
                             </div> --}}

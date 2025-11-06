@@ -75,7 +75,7 @@
                                     <label for="">Chọn loại bắn</label>
                                     <select name="type" class="form-control"
                                         id="">
-                                        <option value="xu">Bắn BB</option>
+                                        <option value="xu">Bắn KTG</option>
                                         <option value="diem">Bắn VNĐ</option>
 
                                     </select>
