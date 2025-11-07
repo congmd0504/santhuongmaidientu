@@ -68,6 +68,7 @@ class CartHelper
                 'sale' => $product->sale,
                 'name' => $product->name,
                 'avatar_path' => $product->avatar_path,
+                'sp_khoi_nghiep' => $product->sp_khoi_nghiep ?? 0,
                 'quantity' => $quantity,
                 'phantramdiem' => $product->phantramdiem ?? 0,
                 'is_tinh_diem' => $product->is_tinh_diem ?? 0,
@@ -335,6 +336,10 @@ class CartHelper
 //            if (Auth::user()->level > 0) {
                 if ($this->cartItems) {
                     foreach ($this->cartItems as $cartItem) {
+                        // Nếu sp_khoi_nghiep tồn tại và = 1 thì BỎ QUA (không tính điểm)
+                        if ( $cartItem['sp_khoi_nghiep'] == 1) {
+                            continue;
+                        }
                         if ($cartItem['sale'] > 0) {
 
                             $price = $cartItem['price'] * ((100 - $cartItem['sale']) / 100) * $cartItem['quantity'];

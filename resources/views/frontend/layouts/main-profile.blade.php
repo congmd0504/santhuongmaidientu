@@ -950,8 +950,7 @@ a.btn-dow {
                             <nav class="mt-2 background-color-white khampha-mobile border-radius-5">
                                 <div class="title-sodu">
                                     <h6>Ví VNĐ</h6>
-                                    <span
-                                        class="">{{ number_format($user->points()->where('active', 1)->whereIn('type', config('point.listTypePointDiemThuong'))->get()->sum('point')) }}đ
+                                    <span class="">{{ number_format($user->points()->where('active', 1)->whereIn('type', config('point.listTypePointDiemThuong'))->get()->sum('point')) }}đ
                                             <i class="fas fa-angle-right"></i>
                                         </span>
                                 </div>

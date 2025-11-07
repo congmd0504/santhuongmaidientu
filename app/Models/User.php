@@ -396,5 +396,24 @@ class User extends Authenticatable
     {
         return $this->level == self::KHOI_NGHIEP;
     }
+    public function getAllChildrenAndSelf()
+    {
+        $userId = $this->id;
+
+        // Lấy tất cả user con trực tiếp
+        $children = User::where('parent_id', $userId)->get();
+
+        // Mảng chứa id của chính user hiện tại
+        $ids = [$userId];
+
+        // Lặp qua từng user con để lấy thêm user cháu, chắt...
+        foreach ($children as $child) {
+            $ids = array_merge($ids, $child->getAllChildrenAndSelf());
+        }
+
+        return $ids;
+    }
+
+
 
 }

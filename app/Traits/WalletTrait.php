@@ -21,7 +21,7 @@ trait WalletTrait
 
     private $data = [];
 
-    public function addWalletDeposit($user, $product)
+    public function addWalletDeposit($user, $product,$quantity)
     {
         if (!$user || !$product) {
             return 0;
@@ -33,7 +33,7 @@ trait WalletTrait
         if ($product->sp_khoi_nghiep == 1) {
             $settingMonth = getConfigWallet();
             $typeWallet = config('wallet.typeWallet');
-            $totalAmount = $product->price;
+            $totalAmount = $product->price*$quantity;
 
             DB::transaction(function () use ($user, $product, $settingMonth, $typeWallet, $totalAmount) {
                 $startDate = now()->startOfMonth()->addMonth();
@@ -61,12 +61,12 @@ trait WalletTrait
                 ]);
             });
 
-            $user->points()->create([
-                'type' => $typePoint[30]['type'] ?? 30, 
-                'point' => $totalAmount,
-                'active' => 1,
-                'userorigin_id' => $user->id,
-            ]);
+            // $user->points()->create([
+            //     'type' => $typePoint[30]['type'] ?? 30, 
+            //     'point' => $totalAmount,
+            //     'active' => 1,
+            //     'userorigin_id' => $user->id,
+            // ]);
         }
 
         return true;

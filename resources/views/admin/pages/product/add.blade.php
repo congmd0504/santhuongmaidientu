@@ -196,12 +196,12 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="">Phần trăm điểm KTG(%)</label>
-                                                    <input type="number" class="form-control @error('phantramdiem')
+                                                    <label for="">Lợi nhuận</label>
+                                                    <input type="number" class="form-control @error('loi_nhuan')
                                                         is-invalid
-                                                        @enderror" id="" value="{{ old('phantramdiem') }}" name="phantramdiem" min="0" max="100" placeholder="Nhập %">
+                                                        @enderror" id="" value="{{ old('loi_nhuan') }}" name="loi_nhuan" min="0" placeholder="Nhập lợi nhuận">
                                                 </div>
-                                                @error('phantramdiem')
+                                                @error('loi_nhuan')
                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -280,7 +280,7 @@
 
            
 
-            <div class="form-check mb-2">
+            {{-- <div class="form-check mb-2">
                 <input type="checkbox" class="form-check-input @error('khong_tich_luy_ds') is-invalid @enderror"
                     value="1" name="khong_tich_luy_ds" id="khong_tich_luy_ds"
                     @if(old('khong_tich_luy_ds')==="1") checked @endif>
@@ -288,7 +288,7 @@
                 @error('khong_tich_luy_ds')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>

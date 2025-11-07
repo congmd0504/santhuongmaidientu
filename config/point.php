@@ -1,8 +1,8 @@
 <?php
 return [
-    'listTypePointMH'=> [1, 2, 3, 4, 5, 6, 9, 10, 12, 15, 16, 17, 18, 19, 20, 26,27,29], //Ví KTG
+    'listTypePointMH'=> [2, 3, 4, 5, 6, 9, 10, 12, 15, 16, 17, 18, 19, 20, 26,29,31], //Ví KTG
     'listTypePointRut'=> [4, 5, 6, 7, 8, 11, 13],
-    'listTypePointDiemThuong'=> [4, 5, 6, 7, 8, 11, 13, 14, 21, 22, 23, 24, 25,28,30], //Nạp tiền, rút tiền và đổi sang KTG sẽ cộng trừ vào ví này
+    'listTypePointDiemThuong'=> [1,4, 5, 6, 7, 8, 11, 13, 14, 21, 22, 23, 24, 25,27,28,30], //Nạp tiền, rút tiền và đổi sang KTG sẽ cộng trừ vào ví này
     'tonghoahongnhanduoc' => [4, 5, 6, 11, 13, 14, 21],
     'listTypePointDiemDaRut'=> [7, 8, 11],
 
@@ -16,7 +16,7 @@ return [
         // start
         1 => [
             'type' => 1,
-            'name' => 'Thành viên mua hàng',
+            'name' => 'Thành viên mua hàng (VNĐ)',
         ],
         2 => [
             'type' => 2,
@@ -120,19 +120,23 @@ return [
         ],
         27 =>  [
             'type' => 27,
-            'name' => 'Thưởng KTG khi con mua sản phẩm',
+            'name' => 'Thưởng khi con mua sản phẩm (VNĐ)',
         ],
         28 =>  [
             'type' => 28,
-            'name' => 'Giải ngân ví đặt cọc hàng tháng',
+            'name' => 'Giải ngân ví đặt cọc hàng tháng (VNĐ)',
         ],
         29 =>  [
             'type' => 29,
-            'name' => 'Tặng thêm ở gói khởi nghiệp',
+            'name' => 'Tặng thêm ở gói khởi nghiệp (KTG)',
         ],
         30 =>  [
             'type' => 30,
-            'name' => 'Mua gói khởi nghiệp',
+            'name' => 'Mua gói khởi nghiệp (VNĐ)',
+        ],
+        31 =>  [
+            'type' => 31,
+            'name' => 'Thưởng mua sản phẩm (KTG)',
         ],
 
 

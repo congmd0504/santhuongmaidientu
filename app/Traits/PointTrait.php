@@ -6,6 +6,7 @@ use App\Models\Hoahong;
 use App\Models\Point;
 use App\Models\User;
 use FontLib\TrueType\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -627,64 +628,95 @@ trait PointTrait
         }
     }
 
- public function addBonusBB($user, $product)
+ public function addBonusBB($user, $product,$quantity)
 {
-    $bonusRate = $product->phantramdiem / 100; // 40%
-    $minBonus = 1; 
-    $maxLevel = 10; // Giới hạn tối đa 10 cấp
-    $baseAmount = moneyToPoint($product->price);
-    $typePoint = config('point.typePoint');
+    $bonusRate  = configPersentLoiNhuan() / 100; 
+    $minBonus   = 1000; 
+    $baseAmount = $product->loi_nhuan*$quantity;
+    $typePoint  = config('point.typePoint');
 
-    // --- Thưởng BB bản thân ---
-    $currentBonus = $baseAmount * $bonusRate;
-    $user->points()->create([
-        'type' => $typePoint[1]['type'] ?? 1, // an toàn tránh lỗi offset
-        'point' => $currentBonus * getConfigBB(),
-        'active' => 1,
-        'userorigin_id' => $user->id,
-        'phantram' => $bonusRate * 100,
-    ]);
-    if($product->khong_tich_luy_ds == 0){
-        handlerAddPointDoanhSoNhom($user, $user, $baseAmount);
-        $levelNewUser = getLevel($user, $product->price);
-        $user->update([
-            'level' => $levelNewUser,
-            'total_money' => $user->total_money + $product->price,
-        ]);
-    }
+    $currentBonus = $baseAmount ;
+    
+    $currentUser   = $user->parent;
+    $currentTotal  = $baseAmount;
+    $visitedIds    = [$user->id]; 
+    $currentLevel  = 1;
 
-    // --- Các cấp cha ---
-    $currentUser = $user->parent;
-    $level = 1;
-    $currentTotal = $baseAmount;
+    while ($currentUser && $currentBonus >= $minBonus) {
 
-    while ($currentUser && $currentBonus >= $minBonus && $level <= $maxLevel) {
+        // Kiểm tra vòng lặp trong cây
+        if (in_array($currentUser->id, $visitedIds)) {
+            Log::warning("Phát hiện vòng lặp trong cây thưởng BB: user_id={$currentUser->id}");
+            break;
+        }
+
+        $visitedIds[] = $currentUser->id;
+
         $currentBonus *= $bonusRate;
         $currentTotal *= $bonusRate;
 
         if ($currentBonus < $minBonus) break;
 
         $currentUser->points()->create([
-            'type' => $typePoint[27]['type'] ?? 27, // sửa đúng loại thưởng của cha
-            'point' => $currentBonus * getConfigBB(),
-            'active' => 1,
+            'type'          => $typePoint[27]['type'] ?? 27, // Loại thưởng cho cha
+            'point'         => $currentBonus,
+            'active'        => 1,
             'userorigin_id' => $user->id,
-            'phantram' => $bonusRate * 100,
+            'phantram'      => $bonusRate * 100,
         ]);
 
-    if($product->khong_tich_luy_ds == 0){
-        handlerAddPointDoanhSoNhom($user, $currentUser, $currentTotal);
-
-        $levelNew = getLevel($currentUser, $product->price);
-        $currentUser->update([
-            'level' => $levelNew,
-            'total_money_group' => $currentUser->total_money_group + $product->price,
-        ]);
+        // Chuyển lên cấp cha tiếp theo
+        $currentUser = $currentUser->parent;
+        $currentLevel++;
     }
+}
+
+public function addSales($user, $product,$quantity)
+{
+    $baseAmount = $product->price / 100 * configPersentDoanhThu();
+
+    handlerAddPointDoanhSoNhom($user, $user, $baseAmount*$quantity);
+
+    $levelNewUser = getLevel($user, $baseAmount*$quantity);
+    $user->update([
+        'level'             => $levelNewUser,
+        'total_money' => $user->total_money + $baseAmount*$quantity,
+    ]);
+
+    $currentUser = $user->parent;
+    $visitedIds  = [$user->id]; 
+
+    while ($currentUser) {
+        if (in_array($currentUser->id, $visitedIds)) {
+            break;
+        }
+
+        $visitedIds[] = $currentUser->id;
+
+        handlerAddPointDoanhSoNhom($user, $currentUser, $baseAmount*$quantity);
+
+        $levelNew = getLevel($currentUser, $baseAmount*$quantity);
+        $currentUser->update([
+            'level'             => $levelNew,
+            'total_money_group' => $currentUser->total_money_group + $baseAmount*$quantity,
+        ]);
 
         $currentUser = $currentUser->parent;
-        $level++;
     }
+}
+
+public function addKTG($user, $total)
+{
+    $baseAmount = $total / 100 * configPersentKTG();
+    $point = moneyToPoint($baseAmount);
+
+    $user->points()->create([
+        'type'          => config("point.typePoint")[31]['type'],
+        'point'         => $point * getConfigBB(),
+        'active'        => 1,
+        'userorigin_id' => $user->id,
+        'phantram'      => configPersentKTG(),
+    ]);
 }
 
 

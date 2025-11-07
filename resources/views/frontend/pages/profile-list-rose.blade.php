@@ -40,7 +40,7 @@
                                     @if ($data->count()>0)
                                         @foreach ($data as $item)
                                             <tr>
-                                                <td> {{number_format($item->point/getConfigBB()) }}</td>
+                                                <td> {{number_format($item->point) }}</td>
                                                 <td>
                                                     @if ($item->userorigin_id)
                                                     {{ $item->userOriginPoint->name }}/

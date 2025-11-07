@@ -231,21 +231,6 @@ class ShoppingCartController extends Controller
         ], 404);
     }
 
-    if ($product->sp_khoi_nghiep == 1) {
-        if (!$user) {
-            return response()->json([
-                'code' => 401,
-                'message' => 'Vui lòng đăng nhập để mua sản phẩm Khởi nghiệp.'
-            ], 401);
-        }
-        if (!$user->checkUserKhoiNghiep()) {
-            return response()->json([
-                'code' => 400,
-                'message' => 'Bạn chưa là tài khoản Khởi nghiệp.'
-            ], 400);
-        }
-    }
-
     $this->cart->add($product, $user);
 
     return response()->json([

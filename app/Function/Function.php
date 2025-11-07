@@ -79,39 +79,36 @@ function getValueConfigLenDaiLy()
 }
 function getLevel($user, $money)
 {
-    $setting = new Setting();
+     $setting = new Setting();
     $listSetting = $setting->where('parent_id', 115)->get();
-    // $setLv1 = optional($listSetting->find(116))->value ?? 0;
-    // $setLv2 = optional($listSetting->find(117))->value ?? 0;
-    $setLv3 = optional($listSetting->find(118))->value ?? 0;
+
+    $setLv1 = optional($listSetting->find(118))->value ?? 0;
+    $setLv2 = optional($listSetting->find(135))->value ?? 0;
+    $setLv3 = optional($listSetting->find(136))->value ?? 0;
+    $setLv4 = optional($listSetting->find(137))->value ?? 0;
     // $setLv4 = optional($listSetting->find(119))->value ?? 0;
     // $setLv5 = optional($listSetting->find(120))->value ?? 0;
-    
-    // ds = ds nhom + ds ca nhan
-    // $currentMoney = $user->total_money + $money + $user->total_money_group;
 
-    // UPDATE LẠI CƠ CHẾ CHỈ CỘNG DOANH SỐ CÁ NHÂN ĐỂ LÊN CẤP 8/2/2024
+    // Cập nhật cơ chế: chỉ tính doanh số cá nhân để lên cấp (8/2/2024)
     $currentMoney = $user->total_money + $money;
     $level = 0;
 
-    // if ($currentMoney >= $setLv5) {
-    //     $level = 4;
-    // } else if ($currentMoney >= $setLv4) {
-    //     $level = 3;
-    // } else  if ($currentMoney >= $setLv3) {
-    //     $level = 2;
-    // }  else  if ($currentMoney >= $setLv1) {
-    //     $level = 1;
-    // }
-
-    //  lên hạng khởi nghiệp
-    if ($currentMoney >= $setLv3) {
+    // Xác định cấp độ theo mốc doanh số
+    if ($currentMoney >= $setLv4) {
+        $level = 4;
+    } elseif ($currentMoney >= $setLv3) {
+        $level = 3;
+    } elseif ($currentMoney >= $setLv2) {
         $level = 2;
-    } 
+    } elseif ($currentMoney >= $setLv1) {
+        $level = 1;
+    }
 
+    // Giữ nguyên cấp nếu cấp hiện tại cao hơn
     if ($user->level > $level) {
         $level = $user->level;
     }
+
     //Thưởng cấp BB
     // $thuongCap = $user->thuong_cap;
 
@@ -599,6 +596,27 @@ function getConfigGift()
 {
     $setting = new Setting();
     return $setting->find(134)->value ?? 0;
+}
+
+function configTotalOrder()
+{
+    $setting = new Setting();
+    return $setting->find(140)->value ?? 0;
+}
+function configPersentKTG()
+{
+    $setting = new Setting();
+    return $setting->find( 139)->value ?? 0;
+}
+function configPersentLoiNhuan()
+{
+    $setting = new Setting();
+    return $setting->find( 138)->value ?? 0;
+}
+function configPersentDoanhThu()
+{
+    $setting = new Setting();
+    return $setting->find( 141)->value ?? 0;
 }
 
 

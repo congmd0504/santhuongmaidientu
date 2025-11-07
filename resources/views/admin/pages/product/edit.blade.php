@@ -200,12 +200,12 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label for="">Phần trăm điểm KTG(%)</label>
+                                                        <label for="">Lợi nhuận</label>
                                                         <input type="number" class="form-control" id=""
-                                                            value="{{ $data->phantramdiem }}" name="phantramdiem"
-                                                            min="0" max="100" placeholder="Nhập %">
+                                                            value="{{ $data->loi_nhuan }}" name="loi_nhuan"
+                                                            min="0"  placeholder="Nhập lợi nhuận">
                                                     </div>
-                                                    @error('phantramdiem')
+                                                    @error('loi_nhuan')
                                                         <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -285,7 +285,7 @@
 
                                                   
 
-                                                    <div class="form-check mb-2">
+                                                    {{-- <div class="form-check mb-2">
                                                         <input type="checkbox" class="form-check-input @error('khong_tich_luy_ds') is-invalid @enderror"
                                                             id="khong_tich_luy_ds" name="khong_tich_luy_ds" value="1"
                                                             @if ($data->khong_tich_luy_ds === 1) checked @endif>
@@ -293,7 +293,7 @@
                                                         @error('khong_tich_luy_ds')
                                                             <div class="text-danger small">{{ $message }}</div>
                                                         @enderror
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>

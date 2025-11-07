@@ -66,6 +66,9 @@
             font-weight: bold;
             margin-top: 0;
         }
+        .row.box-row-mobile > div {
+    padding-left: 0px;
+}
     </style>
 @endsection
 @section('content')
@@ -78,7 +81,7 @@
                 ])
             @endisset --}}
             <div class="wrap-content-main">
-                <div class="row">
+                <div class="row box-row-mobile">
                     @if ($user->active == 0)
                         <div class="col-md-12">
                             <div class="alert alert-danger" style=" font-size: 150%;">
@@ -110,7 +113,7 @@
                     @isset($sumEachType)
                         @foreach ($sumEachType as $item)
                             <div class="col-md-{{ $openPay ? '4' : '12' }} col-sm-12">
-                                <div class="info-box">
+                                <div class="info-box ">
                                     <span class="info-box-icon {{ $item['class'] }}"><i class="fas fa-cart-plus"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text"> {{ $item['name'] }}</span>

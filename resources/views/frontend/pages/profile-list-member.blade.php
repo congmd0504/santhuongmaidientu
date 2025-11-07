@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-sm-12">
 							<div class="card-header">
-								<h3 class="card-title">Danh sách thành viên (Tổng doanh số nhóm: {{ number_format(getDs($user)) }} đ)</h3>
+								<h3 class="card-title">Danh sách thành viên (Tổng doanh số nhóm: {{ number_format(getDs($user)) }} đ / {{ count($user->getAllChildrenAndSelf()) ?? 0 }} thành viên ) </h3>
 							</div>
 
                             <div class="table-responsive">

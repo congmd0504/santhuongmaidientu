@@ -71,10 +71,20 @@
                     <a href="{{route($routeNameEdit,['id'=>$value->id])}}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
                     <a href="{{route($routeNameAdd,['parent_id'=>$value->id])}}" class="btn btn-sm btn-info">+ Thêm</a>
                     <a data-url="{{route($routeNameDelete,['id'=>$value->id])}}" class="btn btn-sm btn-danger lb_delete_recusive"><i class="far fa-trash-alt"></i></a>
-                    
+                    @if ($value->childs->count())
+                    <button type="button" class="btn btn-sm btn-primary lb-toggle">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    @endif
                 </div>
             </div>
-          
+            @if ($value->childs->count())
+                <ul class="font-weight-normal" style="display: none;">
+                    @foreach ($value->childs()->orderBy('order')->get() as $childValue)
+                        @include('admin.components.setting-child', ['childs' => $childValue])
+                    @endforeach
+                </ul>
+            @endif
         </li>
     @endforeach
 </ul>
