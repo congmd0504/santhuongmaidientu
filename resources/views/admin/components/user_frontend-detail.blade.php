@@ -65,7 +65,6 @@
 
                  @isset($sumEachType)
                  @foreach ($sumEachType as $item)
-
                  <div class="col-md-6 col-sm-6">
                     <div class="info-box">
                         <span class="info-box-icon bg-info"><i class="fas fa-cart-plus"></i></span>

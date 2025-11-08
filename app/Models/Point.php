@@ -75,8 +75,10 @@ class Point extends Model
     // lấy tổng điểm có thể rút 0.8 điểm thưởng - điểm đã rút
     public function sumPointDiemCoTheRutCurrent($userId) 
     {
-        //dd($this->sumPointDiemThuongCurrent($userId), $this->sumPointDiemDaRutCurrent($userId));
-        return ($this->sumPointDiemThuongCurrent($userId));
+         return $this->where([
+            ['user_id', $userId],
+            ['active', 1],
+        ])->whereIn('type', config("point.listTypePointDiemThuong"))->select(Point::raw('SUM(point) as total'))->first()->total ?? 0;
     }
 
     // điểm mua hàng hiện có

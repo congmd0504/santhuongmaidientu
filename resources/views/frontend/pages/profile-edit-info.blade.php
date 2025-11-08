@@ -123,9 +123,9 @@
                                                         <div class="wrap-load-image mb-3">
                                                             <div class="form-group">
                                                                 <label for="">Ảnh chứng minh thư mặt trên</label>
-                                                                {{-- @if ($data->status == 0 || $data->status == 1) --}}
+                                                                @if ($user->status!=2) 
                                                                 <input type="file" class="form-control-file img-load-input border" id="" name="cmt_mattren_path">
-                                                            {{-- @endif --}}
+                                                            @endif 
 
                                                             </div>
                                                             @error('cmt_mattren_path')
@@ -136,9 +136,10 @@
                                                         <div class="wrap-load-image mb-3">
                                                             <div class="form-group">
                                                                 <label for="">Ảnh chứng minh thư mặt dưới</label>
-                                                                {{-- @if ($data->status == 0 || $data->status == 1) --}}
+                                                                @if ($user->status!=2) 
+                                                                
                                                                 <input type="file" class="form-control-file img-load-input border" id="" name="cmt_matduoi_path">
-                                                            {{-- @endif --}}
+                                                           @endif 
 
                                                             </div>
                                                             @error('cmt_matduoi_path')

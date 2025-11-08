@@ -654,37 +654,37 @@ class ProfileController extends Controller
 //        }
 
         
-        if ((float)($request->input('pay')) < config('point.typePoint.minMoneyRut')) {
-            return redirect()->route('profile.index')->with("error", "Số tiền tối thiểu được rút là: " . number_format(config('point.typePoint.minMoneyRut'))."đ");
+        if ((float)($request->input('pay')) < configMinRutVi()) {
+            return redirect()->route('profile.index')->with("error", "Số tiền tối thiểu được rút là: " . number_format(configMinRutVi())."đ");
         }
 
 //        $viVnd = $request->input('check_vivnd');
 //        $eightyPercent = $viVnd * 0.8;
 
         $user = auth()->guard('web')->user();
+        $persent = configPersentRutVi() / 100;
+        $persentF = configPersentRutVi();
     
-        $eightyPercent = $this->point->sumPointDiemCoTheRutCurrent($user->id) * 0.8;
+        $eightyPercent = $this->point->sumPointDiemCoTheRutCurrent($user->id) * $persent;
 
         //dd($this->point->where('type', 7)->where('user_id', $user->id)->sum('point'), $this->point->where('type', 8)->where('user_id', $user->id)->sum('point'));
         // dd($this->point->sumPointDiemCoTheRutCurrent($user->id));
 
-        $pointDaRut = $user->pays()->whereIn('status', [1, 2])->sum('point');
-        $pointDaMua = 0 - ($this->point->where('user_id', $user->id)->whereIn('type', config("point.listTypePointDiemMuaHangTichLuy"))->sum('point'));
-        $pointDaDung = $pointDaRut + $pointDaMua;
+        // $pointDaRut = $user->pays()->whereIn('status', [1, 2])->sum('point');
+        // $pointDaMua = $this->point->where('user_id', $user->id)->whereIn('type', config("point.listTypePointDaMua"))->sum('point');
+        
         //$pointDaRut = (float)($request->input('pay'));
         //dd($eightyPercent, $pointDaRut);
         //Nếu tổng số tiền rút lớn hơn 80% hoa hồng nhận được
-
         
-        
-        if($pointDaDung > $eightyPercent){
-            return redirect()->route('profile.index')->with("error", "Số tiền rút lớn hơn 80% tổng hoa hồng được nhận");
+        if($request->input('pay') > $eightyPercent){
+            return redirect()->route('profile.index')->with("error", "Số tiền rút lớn hơn $persentF% tổng ví VNĐ được nhận");
         }
        
         
-        if ((float)($request->input('pay')) > ($eightyPercent - $pointDaDung)) {
-            if(($eightyPercent - $pointDaDung) > 200000){
-                return redirect()->route('profile.index')->with("error", "Số tiền tối đa được rút là: " . number_format($eightyPercent - $pointDaDung)."đ");
+        if ((float)($request->input('pay')) > $eightyPercent) {
+            if(($eightyPercent) > configMinRutVi()){
+                return redirect()->route('profile.index')->with("error", "Số tiền tối đa được rút là: " . number_format($eightyPercent)."đ");
             }else{
                 return redirect()->route('profile.index')->with("error", "Số tiền không đủ để rút");
             }

@@ -618,5 +618,15 @@ function configPersentDoanhThu()
     $setting = new Setting();
     return $setting->find( 141)->value ?? 0;
 }
+function configPersentRutVi()
+{
+    $setting = new Setting();
+    return $setting->find( 144)->value ?? 0;
+}
+function configMinRutVi()
+{
+    $setting = new Setting();
+    return $setting->find( 145)->value ?? 0;
+}
 
 
