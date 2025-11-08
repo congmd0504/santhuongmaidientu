@@ -340,17 +340,13 @@
                                                 <div class="form-group">
                                                     <label for="userSelect">Chọn user</label>
                                                     @php
-                                                        $userPrent = App\Models\User::find($user->parent_id);
+                                                        $userPrent = App\Models\User::all();
                                                     @endphp
-                                                    <select class="form-control" id="userSelect" name="userSelect" required>
+                                                    <select class="form-control select2" id="userSelect" name="userSelect" required>
                                                         <option value="">--- Chọn ---</option>
-                                                        @if($userPrent)
-                                                            <option value="{{ $userPrent->id }}">{{ $userPrent->name }} (Cha)</option>
-                                                        @endif
-
-                                                        @if($user->childs()->count() > 0)
-                                                            @foreach($user->childs()->get() as $us)
-                                                            <option value="{{ $us->id }}">{{ $us->name }} (Con)</option>
+                                                        @if($userPrent->count() > 0)
+                                                            @foreach($userPrent as $us)
+                                                            <option value="{{ $us->id }}">{{ $us->username }} </option>
                                                             @endforeach
                                                         @endif
                                                     </select>
@@ -380,6 +376,32 @@
     </div>
 @endsection
 @section('js')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- jQuery (phải có trước) -->
+
+    <script type="text/javascript" src="{{ asset('lib/lightbox-plus/js/lightbox-plus-jquery.min.js') }}"></script>
+
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#userSelect').select2({
+        placeholder: "--- Chọn người dùng ---",
+        allowClear: true,
+        width: '100%',
+        language: {
+            noResults: function() {
+                return "Không tìm thấy kết quả";
+            }
+        }
+    });
+});
+</script>
+
+
     <script>
         $(function() {
             $(document).on('click', '.pt_icon_right', function() {
