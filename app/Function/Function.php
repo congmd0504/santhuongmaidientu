@@ -263,19 +263,19 @@ function getPhanTramMotaGiamGiaLevel($level)
 
     switch ($level) {
         case 0:
-           return "Bạn được chi trả " . $setLv0 . "% bằng ví KTG các sản phẩm tích lũy Vì đang ở là khách hàng mới";
+           return "Bạn được chi trả " . $setLv0 . "% bằng ví KTG các sản phẩm tiêu dùng Vì đang ở là khách hàng mới";
             break;
         case 1:
-            return "Bạn được chi trả " . $setLv1 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Người tiêu dùng thông minh";
+            return "Bạn được chi trả " . $setLv1 . "% bằng ví KTG các sản phẩm tiêu dùng vì đang là Người tiêu dùng thông minh";
             break;
         case 2:
-            return "Bạn được chi trả " . $setLv2 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Khởi Nghiệp";
+            return "Bạn được chi trả " . $setLv2 . "% bằng ví KTG các sản phẩm tiêu dùng vì đang là Khởi Nghiệp";
             break;
         case 3:
-            return "Bạn được chi trả " . $setLv3 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Quản lý";
+            return "Bạn được chi trả " . $setLv3 . "% bằng ví KTG các sản phẩm tiêu dùng vì đang là Quản lý";
             break;
         case 4:
-            return "Bạn được chi trả " . $setLv4 . "% bằng ví KTG các sản phẩm tích lũy vì đang là Giám đốc vùng";
+            return "Bạn được chi trả " . $setLv4 . "% bằng ví KTG các sản phẩm tiêu dùng vì đang là Giám đốc vùng";
             break;
            
         default:

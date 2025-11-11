@@ -121,7 +121,7 @@ return [
         ],
         27 =>  [
             'type' => 27,
-            'name' => 'Thưởng khi con mua sản phẩm (VNĐ)',
+            'name' => 'Thưởng khi thành viên mua sản phẩm (VNĐ)',
         ],
         28 =>  [
             'type' => 28,

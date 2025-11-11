@@ -70,6 +70,7 @@ class HomeController extends Controller
         // sản phẩm nổi bật
         $productsHot = $this->product->where([
             ['active', 1],
+              ['is_tinh_diem', 1],
         ])->orderBy('order')->orderByDesc('created_at')->get();
         // sản phẩm mới
         $productsNew = $this->product->where([

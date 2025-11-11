@@ -195,16 +195,20 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="">Lợi nhuận</label>
-                                                    <input type="number" class="form-control @error('loi_nhuan')
-                                                        is-invalid
-                                                        @enderror" id="" value="{{ old('loi_nhuan') }}" name="loi_nhuan" min="0" placeholder="Nhập lợi nhuận">
-                                                </div>
-                                                @error('loi_nhuan')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+    <div class="form-group">
+        <label for="">Lợi nhuận</label>
+        <input type="text" class="form-control format-number" id="loi_nhuan_display"
+            value="" placeholder="Nhập lợi nhuận">
+
+        <!-- Input ẩn để gửi lên database -->
+        <input type="hidden" name="loi_nhuan" id="loi_nhuan" value="{{ old('loi_nhuan') }}">
+    </div>
+
+    @error('loi_nhuan')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+</div>
+
 
                                         </div>
                                         <div class="row">
@@ -214,7 +218,7 @@
             <h6 class="text-primary mb-3"><i class="fas fa-tags"></i> Loại sản phẩm</h6>
 
             <div class="form-check mb-2">
-                <input type="checkbox" class="form-check-input @error('sp_khoi_nghiep') is-invalid @enderror" 
+                <input type="checkbox" class="form-check-input single-check @error('sp_khoi_nghiep') is-invalid @enderror" 
                     value="1" name="sp_khoi_nghiep" id="sp_khoi_nghiep"
                     @if(old('sp_khoi_nghiep')==="1") checked @endif>
                 <label class="form-check-label" for="sp_khoi_nghiep">SP Khởi nghiệp</label>
@@ -223,8 +227,8 @@
                 @enderror
             </div>
             <div class="form-check mb-2">
-                <input type="checkbox" class="form-check-input @error('is_tinh_diem') is-invalid @enderror"
-                    value="1" name="is_tinh_diem" id="is_tinh_diem"
+                <input type="checkbox" class="form-check-input single-check @error('is_tinh_diem') is-invalid @enderror"
+                    value="1" name="is_tinh_diem" checked id="is_tinh_diem"
                     @if(old('is_tinh_diem')==="1") checked @endif>
                 <label class="form-check-label" for="is_tinh_diem">SP Tiêu dùng</label>
                 @error('is_tinh_diem')
@@ -386,4 +390,35 @@ $(document).ready(function() {
     }
 });
 </script>
+<script>
+$(document).ready(function() {
+    // Hàm định dạng số có dấu chấm
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    // Khi người dùng nhập liệu
+    $('#loi_nhuan_display').on('input', function() {
+        // Lấy giá trị không có ký tự nào ngoài số
+        let rawValue = $(this).val().replace(/\D/g, '');
+
+        // Hiển thị lại input có dấu chấm
+        $(this).val(formatNumber(rawValue));
+
+        // Gán vào input ẩn (giá trị thật để lưu DB)
+        $('#loi_nhuan').val(rawValue);
+    });
+});
+</script>
+<script>
+$(document).ready(function() {
+    $('.single-check').on('change', function() {
+        if ($(this).is(':checked')) {
+            // Bỏ chọn các checkbox khác cùng class
+            $('.single-check').not(this).prop('checked', false);
+        }
+    });
+});
+</script>
+
 @endsection

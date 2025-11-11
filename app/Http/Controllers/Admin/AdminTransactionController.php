@@ -17,10 +17,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\Point;
 use App\Models\Setting;
+
 class AdminTransactionController extends Controller
 {
     //
-    use DeleteRecordTrait, PointTrait,WalletTrait;
+    use DeleteRecordTrait, PointTrait, WalletTrait;
     private  $transaction;
     private $unit;
     private $listStatus;
@@ -28,7 +29,7 @@ class AdminTransactionController extends Controller
     private $rose;
     private $admin;
     private $user;
-	   private $point;
+    private $point;
     public function __construct(Transaction $transaction, User $user, Admin $admin, Point $point)
     {
         $this->transaction = $transaction;
@@ -38,22 +39,22 @@ class AdminTransactionController extends Controller
         $this->listStatus = $this->transaction->listStatus;
         $this->typePoint = config('point.typePoint');
         $this->rose = config('point.rose');
-		$this->point = $point;
+        $this->point = $point;
     }
     public function index(Request $request)
     {
 
-		//  $totalMoney = $this->transaction->where([
+        //  $totalMoney = $this->transaction->where([
         //     ["active", 1],
         //     ["status", 4]
         // ])->select(DB::raw("sum(total) as total"))->first()->total;
         $totalHoaHong = $this->point->whereIn("type", config("point.listTypePointDiemThuong"))->select(DB::raw("sum(point) as total"))->first()->total;
         $totalMoney = $this->point->where("type", config("point.typePoint.1.type"))->select(DB::raw("sum(point) as total"))->first()->total;
-         $phantram = 0;
+        $phantram = 0;
         if ($totalMoney != 0) {
-            $phantram = round($totalHoaHong/$totalMoney *100, 2);
+            $phantram = round($totalHoaHong / $totalMoney * 100, 2);
         }
-       // dd($totalMoney, $totalHoaHong, $phantram);
+        // dd($totalMoney, $totalHoaHong, $phantram);
 
         //thống kê giao dịch
         $transactionGroupByStatus = $this->transaction->where(['active' => 1])->select($this->transaction->raw('count(status) as total'), 'status')->groupBy('status')->get();
@@ -69,31 +70,30 @@ class AdminTransactionController extends Controller
         $where = [];
         $orWhere = null;
         if ($request->has('keyword') && $request->input('keyword')) {
-           //   $where[] = ['name', 'like', '%' . $request->input('keyword') . '%'];
-          //  $orWhere = ['code', 'like', '%' . $request->input('keyword') . '%'];
+            //   $where[] = ['name', 'like', '%' . $request->input('keyword') . '%'];
+            //  $orWhere = ['code', 'like', '%' . $request->input('keyword') . '%'];
 
 
             //   dd($transactionId);
-          //  $transactions= $transactions->whereIn('user_id',$userId)->orWhere('code', 'like', '%' . $request->input('keyword') . '%');
+            //  $transactions= $transactions->whereIn('user_id',$userId)->orWhere('code', 'like', '%' . $request->input('keyword') . '%');
 
-          $transactions= $transactions->where(function($query){
-            $keyword =request()->input('keyword');
-            $userId = $this->user->where([
-                ['username', 'like', '%' .$keyword . '%'],
-            ])->orWhere([
-                ['name', 'like', '%' . $keyword . '%'],
-            ])->pluck('id')->toArray();
-            $adminId = $this->admin->where([
-                ['name', 'like', '%' .$keyword . '%'],
-            ])->orWhere([
-                ['email', 'like', '%' . $keyword . '%'],
-            ])->pluck('id')->toArray();
+            $transactions = $transactions->where(function ($query) {
+                $keyword = request()->input('keyword');
+                $userId = $this->user->where([
+                    ['username', 'like', '%' . $keyword . '%'],
+                ])->orWhere([
+                    ['name', 'like', '%' . $keyword . '%'],
+                ])->pluck('id')->toArray();
+                $adminId = $this->admin->where([
+                    ['name', 'like', '%' . $keyword . '%'],
+                ])->orWhere([
+                    ['email', 'like', '%' . $keyword . '%'],
+                ])->pluck('id')->toArray();
 
-            $query->whereIn('user_id',$userId)
-            ->orWhere('code', 'like', '%' . $keyword . '%')
-            ->orWhereIn('admin_id',$adminId);
-
-          });
+                $query->whereIn('user_id', $userId)
+                    ->orWhere('code', 'like', '%' . $keyword . '%')
+                    ->orWhereIn('admin_id', $adminId);
+            });
         }
         if ($request->has('status') && $request->input('status')) {
             $where[] = ['status', $request->input('status')];
@@ -140,12 +140,12 @@ class AdminTransactionController extends Controller
             $transactions = $transactions->orderBy("created_at", "DESC");
         }
         $totalTransaction = $transactions->count();
-      //  dd($totalTransaction);
+        //  dd($totalTransaction);
         $transactions =  $transactions->paginate(15);
-        
-        
-        
-        
+
+
+
+
         return view('admin.pages.transaction.index', [
             'data' => $transactions,
             'dataTransactionGroupByStatus' => $dataTransactionGroupByStatus,
@@ -154,9 +154,9 @@ class AdminTransactionController extends Controller
             'keyword' => $request->input('keyword') ? $request->input('keyword') : "",
             'order_with' => $request->input('order_with') ? $request->input('order_with') : "",
             'statusCurrent' => $request->input('status') ? $request->input('status') : "",
-			'totalHoaHong' => $totalHoaHong,
-			'totalMoney' => $totalMoney,
-			'phantram' => $phantram,
+            'totalHoaHong' => $totalHoaHong,
+            'totalMoney' => $totalMoney,
+            'phantram' => $phantram,
         ]);
     }
     public function loadNextStepStatus(Request $request)
@@ -173,15 +173,15 @@ class AdminTransactionController extends Controller
                     break;
                 case 1:
                     $status += 1;
-                    $dataUpdate['admin_id']=auth()->guard('admin')->user()->id;
+                    $dataUpdate['admin_id'] = auth()->guard('admin')->user()->id;
                     break;
                 case 2:
                     $status += 1;
-                    $dataUpdate['admin_id']=auth()->guard('admin')->user()->id;
+                    $dataUpdate['admin_id'] = auth()->guard('admin')->user()->id;
                     break;
                 case 3:
                     $status += 1;
-                    $dataUpdate['admin_id']=auth()->guard('admin')->user()->id;
+                    $dataUpdate['admin_id'] = auth()->guard('admin')->user()->id;
                     // thêm số điểm cây 20 lớp
                     $i = 1;
                     $user = $transaction->user;
@@ -192,7 +192,7 @@ class AdminTransactionController extends Controller
                 default:
                     break;
             }
-            $dataUpdate['status']=$status;
+            $dataUpdate['status'] = $status;
             $transaction->update($dataUpdate);
 
             DB::commit();
@@ -214,7 +214,6 @@ class AdminTransactionController extends Controller
                 'messange' => $exception->getMessage()
             ], 200);
         }
-
     }
     public function loadTransactionDetail($id)
     {
@@ -254,58 +253,58 @@ class AdminTransactionController extends Controller
         return $pdf->download("transaction.pdf");
     }
 
-	  public function editStatus($id)
-        {
-            $transaction=$this->transaction->find($id);
-            if(!$transaction){
-                abort(404);
-            }
-
-            return response()->json([
-                'code' => 200,
-                'html' => view('admin.components.loadStatusTransaction', [
-                    'data'=>$transaction
-                ])->render(),
-                'messange' => 'success'
-            ], 200);
+    public function editStatus($id)
+    {
+        $transaction = $this->transaction->find($id);
+        if (!$transaction) {
+            abort(404);
         }
-    public function updateStatus($id,Request $request){
+
+        return response()->json([
+            'code' => 200,
+            'html' => view('admin.components.loadStatusTransaction', [
+                'data' => $transaction
+            ])->render(),
+            'messange' => 'success'
+        ], 200);
+    }
+    public function updateStatus($id, Request $request)
+    {
         try {
             DB::beginTransaction();
-            $transaction=$this->transaction->find($id);
-            if(!$transaction || $transaction->status == 4){
+            $transaction = $this->transaction->find($id);
+            if (!$transaction || $transaction->status == 4) {
                 abort(404);
             }
+            $user = $this->user->find($transaction->user_id);
             if ($request->status == 4) {
-                $user = $this->user->find($transaction->user_id);
+
                 $orders = $transaction->orders()->get();
                 foreach ($orders as $order) {
                     $product = Product::find($order->product_id);
                     if ($user) {
-                
 
-                    //Tính doanh số 
-                     if ($product->is_tinh_diem == 1 ) {
-                        $this->addSales($user, $product,$order->quantity);
+
+                        //Tính doanh số 
+
+                        $this->addSales($user, $product, $order->quantity);
+
+
+
+                        $this->addBonusBB($user, $product, $order->quantity);
+
+
+                        if ($product->sp_khoi_nghiep == 1 && $transaction->total >= configTotalOrder()) {
+                            $this->addWalletDeposit($user, $product, $order->quantity);
+                        }
                     }
-
-                   if ($product->is_tinh_diem == 1 ) {
-                        $this->addBonusBB($user, $product,$order->quantity);
-                    }
-
-                     if ($product->sp_khoi_nghiep == 1 && $transaction->total >= configTotalOrder()) {
-                        $this->addWalletDeposit($user, $product,$order->quantity);
-                    }
-                   
-
+                    $this->addKTG($user, $transaction->total);
                 }
             }
-        }
 
-            //Tính KTG
-             $this->addKTG($user, $transaction->total);
 
-            if ($user->gift > 0) {
+
+            if ($user->gift > 0 && getConfigGift() > 0) {
                 $user->points()->create([
                     'type' => config("point.typePoint")[29]['type'],
                     'point' => getConfigGift() * getConfigBB(),
@@ -318,51 +317,49 @@ class AdminTransactionController extends Controller
             }
 
             $transaction->update([
-                'status'=>$request->status,
+                'status' => $request->status,
             ]);
 
-            
+
             //Thực hiện hoàn lại điểm và bb khi hủy đơn hàng
             if ($request->status == -1) {
-                
+
                 $user = $transaction->user;
                 // hoàn điểm
                 if ($user) {
                     //Check sản phẩm không tích lũy
                     $checkSPTichLuy = $transaction->orders()->first()->product->khong_tich_luy_ds;
-                    if($checkSPTichLuy == 1){
+                    if ($checkSPTichLuy == 1) {
 
-                        //hoàn điểm bb
-                        if($transaction->point > 0){
+
+                        if ($transaction->point > 0) {
                             $user->points()->create([
                                 'type' => $this->typePoint[26]['type'],
-                                'point' => $transaction->point * getConfigBB(),//1BB = 1000
+                                'point' => $transaction->point * getConfigBB(), //1BB = 1000
                                 'active' => 1,
                             ]);
                         }
 
                         //hoàn điểm vnđ
-                        if($transaction->vi_vnd > 0){
+                        if ($transaction->vi_vnd > 0) {
                             $user->points()->create([
                                 'type' => $this->typePoint[23]['type'],
                                 'point' => $transaction->vi_vnd,
                                 'active' => 1,
                             ]);
                         }
-                        
-                        
-                    }else{
-                        
+                    } else {
+
                         //hoàn điểm bb
-                        if($transaction->point > 0){
+                        if ($transaction->point > 0) {
                             $user->points()->create([
                                 'type' => $this->typePoint[26]['type'],
-                                'point' => $transaction->point * getConfigBB(),//1BB = 1000
+                                'point' => $transaction->point * getConfigBB(), //1BB = 1000
                                 'active' => 1,
                             ]);
                         }
                         //hoàn điểm vnđ
-                        if($transaction->vi_vnd > 0){
+                        if ($transaction->vi_vnd > 0) {
                             $user->points()->create([
                                 'type' => $this->typePoint[25]['type'],
                                 'point' => $transaction->vi_vnd,
@@ -371,7 +368,6 @@ class AdminTransactionController extends Controller
                         }
                     }
                 }
-                
             }
             DB::commit();
             return response()->json([
@@ -393,6 +389,5 @@ class AdminTransactionController extends Controller
                 'messange' => 'error'
             ], 500);
         }
-
     }
 }

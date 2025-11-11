@@ -283,7 +283,7 @@ class AdminProductController extends Controller
                 "title_seo" => $request->input('title_seo'),
                 "content" => $request->input('content'),
                 "active" => $request->input('active'),
-                "is_tinh_diem" => $request->input('is_tinh_diem') ?? 1,
+                "is_tinh_diem" => $request->input('is_tinh_diem') ?? 0,
                 "khong_tich_luy_ds" => $request->input('khong_tich_luy_ds') ?? 0,
                 "category_id" => $request->input('category_id'),
                 "suppiler_id" => 0,
@@ -370,7 +370,7 @@ class AdminProductController extends Controller
                 "title_seo" => $request->input('title_seo'),
                 "content" => $request->input('content'),
                 "active" => $request->input('active'),
-                "is_tinh_diem" => $request->input('is_tinh_diem') ?? 1,
+                "is_tinh_diem" => $request->input('is_tinh_diem') ?? 0,
                 "khong_tich_luy_ds" => $request->input('khong_tich_luy_ds') ?? 0,
                 "category_id" => $request->input('category_id'),
                 //  "suppiler_id" => 0,
@@ -419,7 +419,7 @@ class AdminProductController extends Controller
             //throw $th;
             DB::rollBack();
             Log::error('message' . $exception->getMessage() . 'line :' . $exception->getLine());
-            return redirect()->route('admin.product.index')->with("error", "Sửa sản phẩm không thành công");
+            return redirect()->route('admin.product.index')->with("error", "Sửa sản phẩm không thành công". $exception->getMessage() );
         }
     }
     public function destroy($id)

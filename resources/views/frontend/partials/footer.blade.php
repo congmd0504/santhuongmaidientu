@@ -354,6 +354,23 @@
             flex-wrap: wrap;
             margin-inline: calc(-1 * var(--gutter));
         }
+        .fixed-action {
+            border-top: 1px solid #d3d3d333;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .fixed-action__btn{
+            padding: 2px 15px;
+            margin: 0;
+        }
+        .fixed-action__btn svg{
+            width: 30px;
+            height: 30px
+        }
+        .fixed-action__btn.js-next svg{
+            transform: rotate(180deg);
+        }
     </style>
     <div class="fix-footer d-block">
         <div class="ctnr">
@@ -383,6 +400,12 @@
                     @endforeach
                 </div>
             </div>
+            <div class="fixed-action">
+                <button class="js-back fixed-action__btn"><svg fill="#000000" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 486.975 486.975" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M473.475,230.025h-427.4l116-116c5.3-5.3,5.3-13.8,0-19.1c-5.3-5.3-13.8-5.3-19.1,0l-139,139c-5.3,5.3-5.3,13.8,0,19.1 l139,139c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1l-116-116h427.5c7.5,0,13.5-6,13.5-13.5 S480.975,230.025,473.475,230.025z"></path> </g> </g></svg>
+                </button>
+                <button class="js-next fixed-action__btn"><svg fill="#000000" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 486.975 486.975" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M473.475,230.025h-427.4l116-116c5.3-5.3,5.3-13.8,0-19.1c-5.3-5.3-13.8-5.3-19.1,0l-139,139c-5.3,5.3-5.3,13.8,0,19.1 l139,139c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1l-116-116h427.5c7.5,0,13.5-6,13.5-13.5 S480.975,230.025,473.475,230.025z"></path> </g> </g></svg>
+                </button>
+            </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -393,5 +416,12 @@
         $('#myModalSignIn .modal-bg, #myModalSignIn .close').on("click", function() {
             $('#myModalSignIn').removeClass('show');
         })
+        $(".js-back").click(function() {
+            history.back();
+        });
+        
+        $(".js-next").click(function() {
+            history.forward();
+        });
     </script>
 @endif
