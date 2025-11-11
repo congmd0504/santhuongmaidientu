@@ -189,7 +189,6 @@ class ShoppingCartController extends Controller
             }
         }
 
-
         $totalPriceCart = 0;
         foreach ($data as $totalPriceCarts){
             $totalPriceCart += $totalPriceCarts['totalPriceOneItem'];

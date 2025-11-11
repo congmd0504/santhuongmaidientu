@@ -427,13 +427,17 @@
                                                                     alt="Sofa phòng khách SF08"
                                                                     class="image-card image-default">
                                                             </a>
-                                                            @if ($product->sale > 0 || $product->phantramdiem > 0)
+                                                           @if ($product->sale > 0 || $product->phantramdiem > 0)
                                                                 <span class="sale-acstion">
                                                                     @if ($product->sale > 0)
                                                                         {{ 'Sale ' . $product->sale . '%' }}
                                                                     @endif
                                                                 </span>
-                                                               
+                                                                @if ($product->phantramdiem > 0)
+                                                                <span class="sale-acstion2">
+                                                                    - {{ intval($product->phantramdiem) }}%(KTG)
+                                                                </span>
+                                                                    @endif
                                                             @endif
 
                                                         </div>

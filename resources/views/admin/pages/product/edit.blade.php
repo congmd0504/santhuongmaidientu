@@ -198,20 +198,32 @@
                                                         <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
                                                 </div>
-                                                <div class="col-md-12">
-    <div class="form-group">
-        <label for="">Lợi nhuận</label>
-        <input type="text" class="form-control format-number" id="loi_nhuan_display"
-            value="{{ number_format($data->loi_nhuan, 0, ',', '.') }}" placeholder="Nhập lợi nhuận">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="">Lợi nhuận</label>
+                                                        <input type="text" class="form-control format-number" id="loi_nhuan_display"
+                                                            value="{{ $data->loi_nhuan }}" placeholder="Nhập lợi nhuận">
 
-        <!-- Input ẩn để gửi lên database -->
-        <input type="hidden" name="loi_nhuan" id="loi_nhuan" value="{{ $data->loi_nhuan }}">
-    </div>
+                                                        <!-- Input ẩn để gửi lên database -->
+                                                        <input type="hidden" name="loi_nhuan" id="loi_nhuan" value="{{ $data->loi_nhuan }}">
+                                                    </div>
 
-    @error('loi_nhuan')
-        <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
-</div>
+                                                    @error('loi_nhuan')
+                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="">% Sử dụng KTG</label>
+                                                        <input type="number" class="form-control format-number" name="phantramdiem"
+                                                            value="{{ $data->phantramdiem }}" placeholder="Nhập % sử dụng KTG">
+                                                    </div>
+
+                                                    @error('phantramdiem')
+                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+
 
                                             </div>
                                            <div class="row">

@@ -400,8 +400,14 @@
                                 <div class="image position-relative">
                                     <img src="{{ $cartItem['avatar_path'] }}" alt="{{ $cartItem['name'] }}"
                                         class="mr-3 mt-3" style="width:80px;">
+                                    @if($cartItem['sale'] > 0)
+                                    <span class="badge badge-pill badge-danger position-absolute sale-cart">{{ $cartItem['sale'] }}%</span> 
+                                    - 
+                                    @endif
+                                    @if($cartItem['phantramdiem'] > 0)
                                     <span
-                                        class="badge badge-pill badge-danger position-absolute sale-cart">{{ $cartItem['sale'] }}%</span>
+                                    class="badge badge-pill badge-danger position-absolute sale-cart">{{ $cartItem['phantramdiem'] }}% KTG</span> 
+                                    @endif
                                 </div>
                             </div>
                             <div class="item-cart">
@@ -456,7 +462,7 @@
                 </table>
             </div>
             <div class="area-total border-bottom">
-                <div class="form-inline justify-content-end bgr-chan">
+                <div class="form-inline justify-content-end bgr-le">
                     <label for="" class="mr-sm-2" style = "font-weight: 600;">Sử dụng mã giảm giá:</label>
                     <div class="d-inline-block">
                         <input type="text" class="form-control mr-sm-2" placeholder=""
@@ -470,10 +476,10 @@
                     <button type="button" class="btn btn-danger jsBtnApplyCodeSale">Áp dụng mã giảm giá</button>
                 </div>
 
-                <div class="total d-flex align-items-center justify-content-between bgr-le">
+                {{--<div class="total d-flex align-items-center justify-content-between bgr-le">
                     {{ getPhanTramMotaGiamGiaLevel(optional(auth()->user())->level) }}
                 </div>
-                {{--<div class="total d-flex align-items-center justify-content-between bgr-le">
+                <div class="total d-flex align-items-center justify-content-between bgr-le">
                     <span class="name" style = "font-weight: 600;">Tổng tiền sau khi trả bằng ví BB
                         <small>({{ $totalQuantity }} sản phẩm)</small></span>
                     <span class="total-price "> {{ number_format($totalPrice) }} {{ $unit ?? '' }}</span>

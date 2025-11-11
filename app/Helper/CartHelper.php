@@ -323,69 +323,116 @@ class CartHelper
         return $tQ;
     }
 
-    public function getTotalPointAccessUse()
-    {
-        $tP = 0;
-        $tP2 = 0;
-        $totalPrice = 0;
+//     public function getTotalPointAccessUse()
+//     {
+//         $tP = 0;
+//         $tP2 = 0;
+//         $totalPrice = 0;
 
-        $totalTP = 0; // Initialize totalTP to accumulate the total points
-        $totalPrice = 0; // Initialize totalPrice
+//         $totalTP = 0; // Initialize totalTP to accumulate the total points
+//         $totalPrice = 0; // Initialize totalPrice
 
-        if (Auth::check()) {
-//            if (Auth::user()->level > 0) {
-                if ($this->cartItems) {
-                    foreach ($this->cartItems as $cartItem) {
-                        // Nếu sp_khoi_nghiep tồn tại và = 1 thì BỎ QUA (không tính điểm)
-                        if ( $cartItem['sp_khoi_nghiep'] == 1) {
-                            continue;
-                        }
-                        if ($cartItem['sale'] > 0) {
+//         if (Auth::check()) {
+// //            if (Auth::user()->level > 0) {
+//                 if ($this->cartItems) {
+//                     foreach ($this->cartItems as $cartItem) {
+//                         // Nếu sp_khoi_nghiep tồn tại và = 1 thì BỎ QUA (không tính điểm)
+//                         if ( $cartItem['sp_khoi_nghiep'] == 1) {
+//                             continue;
+//                         }
+//                         if ($cartItem['sale'] > 0) {
 
-                            $price = $cartItem['price'] * ((100 - $cartItem['sale']) / 100) * $cartItem['quantity'];
-                            $totalPrice = $price;
-                            $tP2 = $cartItem['is_tinh_diem'];
-
-
-                            if ($tP2 == 0) {
-
-                                $tP += $totalPrice * (($cartItem['phantramdiem']) / 100);
-
-                            } else {
-
-                                $tP += $totalPrice * getPhanTramGiamGiaLevel(optional(auth()->user())->level) / 100;
-                            }
+//                             $price = $cartItem['price'] * ((100 - $cartItem['sale']) / 100) * $cartItem['quantity'];
+//                             $totalPrice = $price;
+//                             $tP2 = $cartItem['is_tinh_diem'];
 
 
-                        } else {
+//                             if ($tP2 == 0) {
 
-                            $price = $cartItem['price'] * $cartItem['quantity'];
-                            $totalPrice = $price;
-                            $tP2 = $cartItem['is_tinh_diem'];
+//                                 $tP += $totalPrice * (($cartItem['phantramdiem']) / 100);
 
-                            if ($tP2 == 0) {
+//                             } else {
 
-                                $tP += $totalPrice * $cartItem['phantramdiem']/ 100;
+//                                 $tP += $totalPrice * getPhanTramGiamGiaLevel(optional(auth()->user())->level) / 100;
+//                             }
 
-                            } else {
 
-                                $tP += $totalPrice * getPhanTramGiamGiaLevel(optional(auth()->user())->level) / 100;
-                            }
+//                         } else {
 
-                        }
+//                             $price = $cartItem['price'] * $cartItem['quantity'];
+//                             $totalPrice = $price;
+//                             $tP2 = $cartItem['is_tinh_diem'];
 
-                    }
+//                             if ($tP2 == 0) {
 
+//                                 $tP += $totalPrice * $cartItem['phantramdiem']/ 100;
+
+//                             } else {
+
+//                                 $tP += $totalPrice * getPhanTramGiamGiaLevel(optional(auth()->user())->level) / 100;
+//                             }
+
+//                         }
+
+//                     }
+
+//                 }
+
+
+//                 if ($this->cartSale["value"] > 0) {
+//                     $tP = $tP - $this->cartSale["value"];
+//                 }
+//                 $tP = $tP > 0 ? $tP : 0;
+// //            }
+//         }
+//         $tP = $tP / getConfigBB();
+//         return $tP;
+//     }
+
+
+public function getTotalPointAccessUse()
+{
+    $totalPoint = 0;
+
+    if (Auth::check()) {
+        $user = Auth::user();
+
+        // Chỉ cho phép tính điểm khi level > 0
+        if ($user->level >= 0 && $this->cartItems) {
+
+            foreach ($this->cartItems as $cartItem) {
+
+                // Nếu là sản phẩm khởi nghiệp thì bỏ qua
+                if (!empty($cartItem['sp_khoi_nghiep']) && $cartItem['sp_khoi_nghiep'] == 1) {
+                    continue;
                 }
 
-
-                if ($this->cartSale["value"] > 0) {
-                    $tP = $tP - $this->cartSale["value"];
+                // Tính giá sau giảm (nếu có)
+                $price = $cartItem['price'];
+                if (!empty($cartItem['sale']) && $cartItem['sale'] > 0) {
+                    $price *= (100 - $cartItem['sale']) / 100;
                 }
-                $tP = $tP > 0 ? $tP : 0;
-//            }
+
+                // Nhân số lượng
+                $totalPrice = $price * $cartItem['quantity'];
+
+                // Tính điểm theo phần trăm riêng của sản phẩm
+                $phanTramDiem = !empty($cartItem['phantramdiem']) ? $cartItem['phantramdiem'] : 0;
+                $totalPoint += $totalPrice * ($phanTramDiem / 100);
+            }
+
+            // Nếu có giảm giá toàn giỏ hàng thì trừ đi
+            if (!empty($this->cartSale["value"]) && $this->cartSale["value"] > 0) {
+                $totalPoint -= $this->cartSale["value"];
+            }
+
+            // Không để âm
+            $totalPoint = max(0, $totalPoint);
         }
-        $tP = $tP / getConfigBB();
-        return $tP;
     }
+
+    // Chia theo hệ số quy đổi điểm
+    return $totalPoint / getConfigBB();
+}
+
 }
