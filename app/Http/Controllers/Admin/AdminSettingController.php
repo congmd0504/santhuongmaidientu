@@ -31,7 +31,7 @@ class AdminSettingController extends Controller
                 $parentBr=$this->setting->find($request->input('parent_id'));
             }
         }else{
-            $data = $this->setting->where('parent_id', 0)->orderBy("created_at", "desc")->paginate(15);
+            $data = $this->setting->where('parent_id', 0)->orderBy("created_at", "desc")->paginate(25);
         }
         return view(
             "admin.pages.setting.list",

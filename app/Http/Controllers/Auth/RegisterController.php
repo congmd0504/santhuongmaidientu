@@ -89,7 +89,7 @@ class RegisterController extends Controller
             if ($userParent->parent_all_key) {
                 $parentKey = $userParent->parent_all_key . $userParent->id . "|";
             }
-            return User::create([
+            $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 "parent_id" => $userParent->id,
@@ -101,7 +101,7 @@ class RegisterController extends Controller
                 "code" => makeCodeUser(new User()),
             ]);
         } else {
-            return User::create([
+            $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'phone' => $data['phone'] ?? '',
@@ -111,6 +111,14 @@ class RegisterController extends Controller
                 "code" => makeCodeUser(new User()),
             ]);
         }
+        $user->points()->create([
+            'type' => config("point.typePoint")[31]['type'],
+            'point' => configCreateUser() * getConfigBB(),
+            'active' => 1,
+            'userorigin_id' => $user->id,
+        ]);
+
+        return $user;
     }
 
 

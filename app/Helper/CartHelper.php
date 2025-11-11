@@ -398,7 +398,7 @@ public function getTotalPointAccessUse()
         $user = Auth::user();
 
         // Chỉ cho phép tính điểm khi level > 0
-        if ($user->level > 0 && $this->cartItems) {
+        if ($user->level >= configLevelUserKTG() && $this->cartItems) {
 
             foreach ($this->cartItems as $cartItem) {
 

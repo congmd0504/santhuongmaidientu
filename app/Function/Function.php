@@ -628,5 +628,15 @@ function configMinRutVi()
     $setting = new Setting();
     return $setting->find( 145)->value ?? 0;
 }
+function configCreateUser()
+{
+    $setting = new Setting();
+    return $setting->find( 146)->value ?? 0;
+}
+function configLevelUserKTG()
+{
+    $setting = new Setting();
+    return $setting->find( 147)->value ?? 0;
+}
 
 

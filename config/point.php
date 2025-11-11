@@ -1,6 +1,6 @@
 <?php
 return [
-    'listTypePointMH'=> [2, 3, 4, 5, 6, 9, 10, 12, 15, 16, 17, 18, 19, 20, 26,29,31], //Ví KTG
+    'listTypePointMH'=> [2, 3, 4, 5, 6, 9, 10, 12, 15, 16, 17, 18, 19, 20, 26,29,31,32], //Ví KTG
     'listTypePointRut'=> [4, 5, 6, 7, 8, 11, 13],
     'listTypePointDiemThuong'=> [1,4, 5, 6, 7, 8, 11, 13, 14, 21, 22, 23, 24, 25,27,28,30], //Nạp tiền, rút tiền và đổi sang KTG sẽ cộng trừ vào ví này
      'listTypePointDaMua'=> [1,4, 5, 6, 8, 11, 13, 14, 21, 22, 23, 24, 25,27,28,30], 
@@ -138,6 +138,10 @@ return [
         31 =>  [
             'type' => 31,
             'name' => 'Thưởng mua sản phẩm (KTG)',
+        ],
+        32 =>  [
+            'type' => 32,
+            'name' => 'Tặng KTG cho tài khoản mới',
         ],
 
 
