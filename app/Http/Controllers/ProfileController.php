@@ -391,6 +391,12 @@ class ProfileController extends Controller
                 'point' => $this->typePoint['defaultPoint'],
                 'active' => 0,
             ]);
+            $user->points()->create([
+                'type' => config("point.typePoint")[31]['type'],
+                'point' => configCreateUser() * getConfigBB(),
+                'active' => 1,
+                'userorigin_id' => $user->id,
+            ]);
 
             $product = $this->product->where(['masp' => $request->input('masp')])->first();
 
@@ -533,6 +539,12 @@ class ProfileController extends Controller
                 // dd($dataAdminUserFrontendCreate);
                 // insert database in user table
                 $user = $this->user->create($dataAdminUserFrontendCreate);
+                $user->points()->create([
+                    'type' => config("point.typePoint")[31]['type'],
+                    'point' => configCreateUser() * getConfigBB(),
+                    'active' => 1,
+                    'userorigin_id' => $user->id,
+                ]);
                 // insert database to product_tags table
                 // thêm số điểm nạp lúc đầu
 
