@@ -18,6 +18,9 @@
     <meta property="og:url" content="{{ makeLink("home") }}" />
     <link rel="canonical" href="{{ makeLink("home") }}" />
     <link rel="shortcut icon" href="../favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{URL::to('/frontend/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{URL::to('/frontend/images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{URL::to('/frontend/images/favicon.png')}}">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" type="text/css" href="{{ asset('lib/bootstrap-4.5.3-dist/css/bootstrap.min.css') }}">
