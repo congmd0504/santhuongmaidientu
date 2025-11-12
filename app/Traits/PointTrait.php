@@ -443,7 +443,7 @@ trait PointTrait
         // add điểm thưởng kyc
         $a = $user->points()->create([
             'type' => config("point.typePoint.2")['type'],
-            'point' => getKYCNhanThuong(),
+            'point' => getKYCNhanThuong() * getConfigBB(),
             'active' => 1,
             'userorigin_id' => $user->id,
         ]);
