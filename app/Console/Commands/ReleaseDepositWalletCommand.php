@@ -20,7 +20,9 @@ class ReleaseDepositWalletCommand extends Command
 
         $wallets = DepositWallet::where('status', 'active')
             ->where('remaining_amount', '>', 0)
+            ->whereDate('start_date', '<=', now()->startOfMonth()) // ✅ Thêm điều kiện này
             ->get();
+
 
         if ($wallets->isEmpty()) {
             Log::info("Không có ví nào cần giải ngân.");
@@ -31,35 +33,13 @@ class ReleaseDepositWalletCommand extends Command
 
         try {
             foreach ($wallets as $wallet) {
-                $createdAt = $wallet->created_at;
-                $now = now();
-
-                // Mùng 1 tháng hiện tại
-                $firstOfThisMonth = $now->copy()->firstOfMonth();
-
-                // Mùng 1 tháng sau
-                $firstOfNextMonth = $now->copy()->addMonthNoOverflow()->firstOfMonth();
-
-                // Mùng 1 tháng sau nữa
-                $firstOfNextNextMonth = $now->copy()->addMonthsNoOverflow(2)->firstOfMonth();
-
-                // Nếu ví được tạo sau mùng 1 tháng hiện tại
-                // => kiểm tra xem từ ngày tạo đến mùng 1 kế tiếp đủ 15 ngày chưa
-                if ($createdAt->greaterThan($firstOfThisMonth)) {
-                    $daysDiff = $createdAt->diffInDays($firstOfNextMonth);
-                    if ($daysDiff < 15) {
-                        Log::info("⏩ Ví #{$wallet->id} chưa đủ 15 ngày -> chỉ giải ngân từ mùng 1 tháng sau nữa ({$firstOfNextNextMonth->toDateString()})");
-                        continue; // bỏ qua tháng này
-                    }
-                }
-
-                // Nếu tới đây thì đủ điều kiện giải ngân
                 $releaseAmount = $wallet->monthly_release;
 
                 if ($wallet->remaining_amount < $releaseAmount) {
                     $releaseAmount = $wallet->remaining_amount;
                 }
 
+                // Cập nhật ví
                 $wallet->remaining_amount -= $releaseAmount;
 
                 if ($wallet->remaining_amount <= 0) {
@@ -90,7 +70,6 @@ class ReleaseDepositWalletCommand extends Command
 
                 Log::info("✅ Giải ngân {$releaseAmount}đ & cộng điểm cho user #{$wallet->user_id}, ví #{$wallet->id}");
             }
-
 
             DB::commit();
             Log::info("=== Giải ngân hoàn tất (" . now() . ") ===");

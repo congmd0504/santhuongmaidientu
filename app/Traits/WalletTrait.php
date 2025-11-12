@@ -21,24 +21,41 @@ trait WalletTrait
 
     private $data = [];
 
-    public function addWalletDeposit($user, $product,$quantity)
+   public function addWalletDeposit($user, $product, $quantity)
     {
         if (!$user || !$product) {
             return 0;
         }
+
+        // Cộng quà cho user
         $user->update([
             'gift' => $user->gift + 1,
         ]);
 
+        // Chỉ áp dụng cho sản phẩm khởi nghiệp
         if ($product->sp_khoi_nghiep == 1) {
-            $settingMonth = getConfigWallet();
+            $settingMonth = getConfigWallet(); // Số tháng được cấu hình
             $typeWallet = config('wallet.typeWallet');
-            $totalAmount = $product->price*$quantity;
+            $totalAmount = $product->price * $quantity;
 
             DB::transaction(function () use ($user, $product, $settingMonth, $typeWallet, $totalAmount) {
-                $startDate = now()->startOfMonth()->addMonth();
+                $now = now();
+                $firstDayNextMonth = $now->copy()->addMonth()->startOfMonth();
+
+                // Tính số ngày từ hôm nay đến mùng 1 tháng sau
+                $daysToNextMonth = $now->diffInDays($firstDayNextMonth);
+
+                // Nếu còn >=15 ngày đến mùng 1 tháng sau => bắt đầu từ tháng sau
+                // Nếu ít hơn 15 ngày => bắt đầu từ tháng kế tiếp nữa
+                if ($daysToNextMonth >= 15) {
+                    $startDate = $firstDayNextMonth;
+                } else {
+                    $startDate = $firstDayNextMonth->copy()->addMonth();
+                }
+
                 $endDate = $startDate->copy()->addMonths($settingMonth);
 
+                // Tạo ví nạp
                 $wallet = DepositWallet::create([
                     'user_id' => $user->id,
                     'product_id' => $product->id,
@@ -51,6 +68,7 @@ trait WalletTrait
                     'status' => 'active',
                 ]);
 
+                // Ghi log lịch sử ví
                 DepositWalletLog::create([
                     'wallet_id' => $wallet->id,
                     'user_id' => $user->id,
@@ -60,17 +78,11 @@ trait WalletTrait
                     'status' => 'success',
                 ]);
             });
-
-            // $user->points()->create([
-            //     'type' => $typePoint[30]['type'] ?? 30, 
-            //     'point' => $totalAmount,
-            //     'active' => 1,
-            //     'userorigin_id' => $user->id,
-            // ]);
         }
 
         return true;
     }
+
 
 
 
