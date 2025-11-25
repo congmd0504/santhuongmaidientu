@@ -695,9 +695,9 @@ public function addSales($user, $product,$quantity)
 
         handlerAddPointDoanhSoNhom($user, $currentUser, $baseAmount*$quantity);
 
-        $levelNew = getLevel($currentUser, $baseAmount*$quantity);
+        // $levelNew = getLevel($currentUser, $baseAmount*$quantity);
         $currentUser->update([
-            'level'             => $levelNew,
+            // 'level'             => $levelNew,
             'total_money_group' => $currentUser->total_money_group + $baseAmount*$quantity,
         ]);
 

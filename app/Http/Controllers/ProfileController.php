@@ -664,8 +664,10 @@ class ProfileController extends Controller
 //        if ((float)($request->input('pay')) < moneyToPoint(config('point.typePoint.minMoneyRut'))) {
 //            return redirect()->route('profile.index')->with("error", "Số tiền tối thiểu rút là: " . number_format(moneyToPoint(config('point.typePoint.minMoneyRut'))));
 //        }
-
-        
+        $user = auth()->guard('web')->user();
+         if($user->level < configLevelUseRT()){
+            return redirect()->route('profile.index')->with("error", "Bạn phải đạt hạng " . getTenLevel(configLevelUseRT()) . " mới được rút ví");
+        }
         if ((float)($request->input('pay')) < configMinRutVi()) {
             return redirect()->route('profile.index')->with("error", "Số tiền tối thiểu được rút là: " . number_format(configMinRutVi())."đ");
         }
@@ -673,9 +675,11 @@ class ProfileController extends Controller
 //        $viVnd = $request->input('check_vivnd');
 //        $eightyPercent = $viVnd * 0.8;
 
-        $user = auth()->guard('web')->user();
+     
         $persent = configPersentRutVi() / 100;
         $persentF = configPersentRutVi();
+
+       
     
         $eightyPercent = $this->point->sumPointDiemCoTheRutCurrent($user->id) * $persent;
 

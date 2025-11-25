@@ -82,8 +82,8 @@ function getLevel($user, $money)
      $setting = new Setting();
     $listSetting = $setting->where('parent_id', 115)->get();
 
-    $setLv1 = optional($listSetting->find(118))->value ?? 0;
-    $setLv2 = optional($listSetting->find(135))->value ?? 0;
+    $setLv1 = optional($listSetting->find(135))->value ?? 0;
+    $setLv2 = optional($listSetting->find(118))->value ?? 0;
     $setLv3 = optional($listSetting->find(136))->value ?? 0;
     $setLv4 = optional($listSetting->find(137))->value ?? 0;
     // $setLv4 = optional($listSetting->find(119))->value ?? 0;
@@ -637,6 +637,11 @@ function configLevelUserKTG()
 {
     $setting = new Setting();
     return $setting->find( 147)->value ?? 0;
+}
+function configLevelUseRT()
+{
+    $setting = new Setting();
+    return $setting->find( 148)->value ?? 0;
 }
 
 
