@@ -743,44 +743,86 @@ class AdminUserFrontendController extends Controller
     {
         try {
             DB::beginTransaction();
+
             $point = $request->pay;
             $list = collect();
-            if ($request->user_id) {
-                $list = collect($request->user_id);
-            } else {
-                $list = $this->user->where("active", 1)->pluck("id");
-            }
-            Log::error("message" . $list);
 
+            /**
+             * =============================
+             *   Xử lý danh sách user nhận điểm
+             * =============================
+             */
+            if ($request->type_shoot === 'user') {
+
+                // Nếu chọn thành viên (một hoặc nhiều)
+                if ($request->user_id) {
+                    $list = collect($request->user_id);
+                } else {
+                    // Không chọn => bắn cho tất cả active
+                    $list = $this->user->where("active", 1)->pluck("id");
+                }
+            } elseif ($request->type_shoot === 'rank') {
+
+                // BẮN THEO RANK => Lấy các user có rank tương ứng
+                if ($request->rank_id) {
+                    return back()->with("error", "Vui lòng chọn hạng thành viên");
+                }
+
+                $list = $this->user
+                    ->where("active", 1)
+                    ->where("level", $request->rank_id)
+                    ->pluck("id");
+            }
+
+            Log::info("Danh sách user nhận điểm: " . $list->implode(', '));
+
+            /**
+             * =============================
+             *     Xử lý loại và số điểm
+             * =============================
+             */
             if ($request->type == 'diem') {
                 $type = config("point.typePoint.13.type");
             }
-            if($request->type == 'xu') {
+
+            if ($request->type == 'xu') {
                 $type = config("point.typePoint.12.type");
-                $point = $point * getConfigBB(); //1BB = 1000
+                $point = $point * getConfigBB(); // 1BB = 1000
             }
 
+            /**
+             * =============================
+             *      Tạo dữ liệu insert
+             * =============================
+             */
             $dataInsert = $list->map(function ($id) use ($point, $type) {
                 return [
-                    'type' => $type,
-                    'point' => $point,
-                    'active' => 1,
-                    'user_id' => $id,
-                    "created_at" => new \DateTime()
+                    'type'       => $type,
+                    'point'      => $point,
+                    'active'     => 1,
+                    'user_id'    => $id,
+                    'created_at' => now(),
                 ];
             });
-            //dd( $dataInsert);
-            $dataInsert->chunk(200)->each(function ($itemChunkInsert, $key) {
-                DB::table("points")->insert($itemChunkInsert->toArray());
+
+            // Chia nhỏ insert tránh tràn bộ nhớ
+            $dataInsert->chunk(200)->each(function ($chunk) {
+                DB::table("points")->insert($chunk->toArray());
             });
+
             DB::commit();
-            return redirect(route("admin.user_frontend.banDiem"))->with("alert", "Bắn điểm thành công");
+            return redirect(route("admin.user_frontend.banDiem"))
+                ->with("alert", "Bắn điểm thành công");
         } catch (\Exception $exception) {
+
             DB::rollBack();
-            Log::error('message' . $exception->getMessage() . 'line :' . $exception->getLine());
-            return redirect(route("admin.user_frontend.banDiem"))->with("error", "Bắn điểm không thành công");
+            Log::error('message: ' . $exception->getMessage() . ' line: ' . $exception->getLine());
+
+            return redirect(route("admin.user_frontend.banDiem"))
+                ->with("error", "Bắn điểm không thành công");
         }
     }
+
     public function banDiemIndex()
     {
         $data = $this->point->where('type', config("point.typePoint.12.type"))->orderByDesc("created_at")->paginate(15);
@@ -1042,7 +1084,7 @@ class AdminUserFrontendController extends Controller
             DB::beginTransaction();
             $typePoint = config('point.typePoint');
             $user = $this->user->find($id);
-            $thanhTien = getConfigBB();//1BB = 1000
+            $thanhTien = getConfigBB(); //1BB = 1000
             //Cập nhật lại level cho user
             $dataUserUpdate = [
                 "level" => $request->input('level'),
@@ -1052,7 +1094,7 @@ class AdminUserFrontendController extends Controller
             $level = $user->level;
             $thuongCap = $user->thuong_cap;
 
-            if($level > $thuongCap){
+            if ($level > $thuongCap) {
                 if ($level == 5) {
 
                     $user->points()->create([
@@ -1065,7 +1107,6 @@ class AdminUserFrontendController extends Controller
                         "thuong_cap" => $level,
                     ];
                     $user->update($dataUserUpdateCap);
-
                 } else if ($level == 4) {
 
                     $user->points()->create([
@@ -1078,7 +1119,6 @@ class AdminUserFrontendController extends Controller
                         "thuong_cap" => $level,
                     ];
                     $user->update($dataUserUpdateCap);
-
                 } else if ($level == 3) {
 
                     $user->points()->create([
@@ -1091,7 +1131,6 @@ class AdminUserFrontendController extends Controller
                         "thuong_cap" => $level,
                     ];
                     $user->update($dataUserUpdateCap);
-
                 } else if ($level == 2) {
 
                     $user->points()->create([
@@ -1104,7 +1143,6 @@ class AdminUserFrontendController extends Controller
                         "thuong_cap" => $level,
                     ];
                     $user->update($dataUserUpdateCap);
-
                 } else  if ($level == 1) {
 
                     $user->points()->create([
