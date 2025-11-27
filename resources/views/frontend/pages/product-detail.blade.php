@@ -89,9 +89,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="gioi_thieu_images">
-                                                            {!! $data->description !!}
-                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="col-lg-5 col-md-12 col-sm-12">
                                                         <div class="product-information">
